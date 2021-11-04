@@ -1,6 +1,6 @@
 /**************************************************************/
 /* Input_priorProbability.c */
-/* Yi Lin Tay 2103154 */
+/* Tay Yi Lin  2103154@sit.singaporetech.edu.sg              */
 /*************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,7 +42,7 @@ void main(void)
 
 /**************************************************************/
 /* void readingFile(void); */
-/* Yi Lin Tay 2103154 */
+/* Tay Yi Lin  2103154@sit.singaporetech.edu.sg              */
 /*************************************************************/
 int readingFile(void)
 {
@@ -123,7 +123,7 @@ int readingFile(void)
 
 /**************************************************************/
 /* float priorProbability (void) */
-/* Yi Lin Tay 2103154 */
+/* Tay Yi Lin  2103154@sit.singaporetech.edu.sg              */
 /*************************************************************/
 float priorProbability(void)
 {
