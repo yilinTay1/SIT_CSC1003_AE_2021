@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-int readingFile(void);       // function Prototypes
-float priorProbability(void); // function Prototypes
+int readingFile(void);        // function Prototypes
+void priorProbability(void); // function Prototypes
 
 /* global variable declaration */
 // split into training set and testing set
@@ -22,20 +22,19 @@ float trainingOutput[80][1];
 float testingOutput[20][1];
 
 // prior probability
-float priorProbability_Normal = 0, priorProbability_Altered = 0;
+float priorProbability_Normal = 0;
+float priorProbability_Altered = 0;
 
 void main(void)
 {
     /* print heading */
-    printf("\nInput_priorProbability.c \n"); 
+    printf("\nInput_priorProbability.c \n");
 
     /* Input */
     readingFile();
 
     /* calculate prior probability */
-    priorProbability_Altered = priorProbability();
-    priorProbability_Normal = 1 - priorProbability_Altered;
-
+    priorProbability();
     printf("\nBased on the training dataset, P(Y = Normal) prior probability: %f \n", priorProbability_Normal);
     printf("Based on the training dataset, P(Y = Altered) prior probability: %f \n", priorProbability_Altered);
 }
@@ -61,20 +60,19 @@ int readingFile(void)
     int row_Count2 = 0;
     int col_Count = 0;
 
-    // reading line by line, max 256 bytes
-    const unsigned MAX_LENGTH = 256;
+    // reading line by line
+    const unsigned MAX_LENGTH = 100;
     char buffer[MAX_LENGTH];
 
-    while (fgets(buffer, MAX_LENGTH, fp))
+    while (fgets(buffer, MAX_LENGTH, fp)) //reads a line from the specified stream and stores it into the string- buffer.
     {
         // extract the first token
-        char *token = strtok(buffer, ",");
+        char *token = strtok(buffer, ","); //breaks string-buffer into a series of tokens using the delimiter-",".
 
         // loop through the string to extract all other tokens
         while (token != NULL)
         {
             col_Count = col_Count % 10;
-
             // training set
             if (row_Count < 80)
             {
@@ -106,7 +104,7 @@ int readingFile(void)
                 }
             }
             col_Count += 1;
-            token = strtok(NULL, ",");
+            token = strtok(NULL, ","); //NULL as the first argument, tells the function to continue tokenizing the string you passed in first.
         }
 
         if (row_Count >= 80)
@@ -125,7 +123,7 @@ int readingFile(void)
 /* float priorProbability (void) */
 /* Tay Yi Lin  2103154@sit.singaporetech.edu.sg              */
 /*************************************************************/
-float priorProbability(void)
+void priorProbability(void)
 {
     int yAlteredCounter = 0;
     float yAlteredProbability = 0.0;
@@ -139,5 +137,6 @@ float priorProbability(void)
     }
     yAlteredProbability = (float)yAlteredCounter / (float)80;
 
-    return yAlteredProbability;
+    priorProbability_Altered = yAlteredProbability;
+    priorProbability_Normal = 1 - priorProbability_Altered;
 }
