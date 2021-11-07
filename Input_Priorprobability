@@ -11,19 +11,21 @@ void priorProbability(void); // function Prototypes
 
 /* global variable declaration */
 // split into training set and testing set
-float arrayTraining[80][10];
-float arrayTesting[20][10];
+double arrayTraining[80][10];
+double arrayTesting[20][10];
 
 // further split training set and testing set into feature and output set
-float trainingFeature[80][9];
-float testingFeature[20][9];
+double trainingFeature[80][9];
+double testingFeature[20][9];
 
-float trainingOutput[80][1];
-float testingOutput[20][1];
+double trainingOutput[80][1];
+double testingOutput[20][1];
 
 // prior probability
-float priorProbability_Normal = 0;
-float priorProbability_Altered = 0;
+double priorProbability_Normal = 0;
+double priorProbability_Altered = 0;
+
+
 
 void main(void)
 {
