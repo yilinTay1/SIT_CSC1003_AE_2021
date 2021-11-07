@@ -8,6 +8,8 @@
 
 int readingFile(void);        // function Prototypes
 void priorProbability(void); // function Prototypes
+void conditionalProbability(void); // function Prototypes
+
 
 /* global variable declaration */
 // split into training set and testing set
@@ -70,6 +72,10 @@ void main(void)
     priorProbability();
     printf("\nBased on the training dataset, P(Y = Normal) prior probability: %f \n", priorProbability_Normal);
     printf("Based on the training dataset, P(Y = Altered) prior probability: %f \n", priorProbability_Altered);
+
+    /* calculate Conditional probability */
+    conditionalProbability();
+
 }
 
 /**************************************************************/
@@ -175,3 +181,479 @@ void priorProbability(void)
     priorProbability_Altered = yAlteredProbability;
     priorProbability_Normal = 1 - priorProbability_Altered;
 }
+
+
+/**************************************************************/
+/* void conditionalProbability(void) */
+/* Ang Quan Xing 2101536@sit.singaporetech.edu.sg              */
+/*************************************************************/
+void conditionalProbability(void)
+{
+
+/************************************************************************************************************/
+/*Find the conditional probability of Season of Analysis under Diagnosis=Normal=0*/
+/************************************************************************************************************/
+    CP_SeasonAnalysis_Normal[0] = 0; /*under diagnosis=Normal, Winter;*/
+    CP_SeasonAnalysis_Normal[1] = 0; /*under diagnosis=Normal, Spring;*/
+    CP_SeasonAnalysis_Normal[2] = 0; /*under diagnosis=Normal, Summer;*/
+    CP_SeasonAnalysis_Normal[3] = 0;/*under diagnosis=Normal, Fall;*/
+
+    for (size_t i = 0; i < 80; i++)
+    {
+         if(trainingFeature[i][0] == -1.000000) /*under diagnosis=Normal, Winter;*/
+         {
+                CP_SeasonAnalysis_Normal[0] = CP_SeasonAnalysis_Normal[0] + 1;  
+         }
+         if(trainingFeature[i][0] == -0.330000) /*under diagnosis=Normal, Spring;*/
+         {
+                CP_SeasonAnalysis_Normal[1]=  CP_SeasonAnalysis_Normal[1] + 1; 
+         }
+         if(trainingFeature[i][0] ==0.330000) /*under diagnosis=Normal, Summer;*/
+         {
+                CP_SeasonAnalysis_Normal[2] =  CP_SeasonAnalysis_Normal[2] + 1; 
+         }
+         if(trainingFeature[i][0] ==1.000000) /*under diagnosis=Normal, Fall;*/
+         {
+              CP_SeasonAnalysis_Normal[3] =   CP_SeasonAnalysis_Normal[3] +1; 
+         }
+    }
+  
+    CP_SeasonAnalysis_Normal[0] /= yNormalCounter;
+    CP_SeasonAnalysis_Normal[1] /= yNormalCounter;
+    CP_SeasonAnalysis_Normal[2] /= yNormalCounter;
+    CP_SeasonAnalysis_Normal[3] /= yNormalCounter;
+  
+   
+/************************************************************************************************************/
+/*Find the conditional probability of Season of Analysis under Diagnosis=Altered=1*/
+/************************************************************************************************************/
+    CP_SeasonAnalysis_Altered[0] = 0; /*under diagnosis=Altered, Winter;*/
+    CP_SeasonAnalysis_Altered[1] = 0; /*under diagnosis=Altered, Spring;*/
+    CP_SeasonAnalysis_Altered[2] = 0; /*under diagnosis=Altered, Summer;*/
+    CP_SeasonAnalysis_Altered[3] = 0; /*under diagnosis=Altered, Fall;*/ 
+
+    for (size_t i = 0; i < 80; i++)
+
+    {
+         if(trainingFeature[i][0] == -1.000000) /*under diagnosis=Altered, Winter;*/
+         {
+                CP_SeasonAnalysis_Altered[0] = CP_SeasonAnalysis_Altered[0] + 1;  
+         }
+         if(trainingFeature[i][0] == -0.330000) /*under diagnosis=Altered, Spring;*/
+         {
+                CP_SeasonAnalysis_Altered[1]=  CP_SeasonAnalysis_Altered[1] + 1; 
+         }
+         if(trainingFeature[i][0] ==0.330000) /*under diagnosis=Altered, Summer;*/
+         {
+                CP_SeasonAnalysis_Altered[2] =  CP_SeasonAnalysis_Altered[2] + 1; 
+         }
+         if(trainingFeature[i][0] ==1.000000) /*under diagnosis=Altered, Fall;*/ 
+         {
+              CP_SeasonAnalysis_Altered[3] =   CP_SeasonAnalysis_Altered[3] +1; 
+         }
+    }
+    // printf("\n CP_SeasonAnalysis_Altered [0] = %f",CP_SeasonAnalysis_Altered[0] );
+    // printf("\n CP_SeasonAnalysis_Altered [1] = %f",CP_SeasonAnalysis_Altered[1] );
+    // printf("\n CP_SeasonAnalysis_Altered [2] = %f",CP_SeasonAnalysis_Altered[2] );
+    // printf("\n CP_SeasonAnalysis_Altered [3] = %f",CP_SeasonAnalysis_Altered[3] );
+    CP_SeasonAnalysis_Altered[0] /= yAlteredCounter;
+    CP_SeasonAnalysis_Altered[1] /= yAlteredCounter;
+    CP_SeasonAnalysis_Altered[2] /= yAlteredCounter;
+    CP_SeasonAnalysis_Altered[3] /= yAlteredCounter;
+    // printf("\n After Calculation");
+    // printf("\n CP_SeasonAnalysis_Altered [0] = %f",CP_SeasonAnalysis_Altered[0] );
+    // printf("\n CP_SeasonAnalysis_Altered [1] = %f",CP_SeasonAnalysis_Altered[1] );
+    // printf("\n CP_SeasonAnalysis_Altered [2] = %f",CP_SeasonAnalysis_Altered[2] );
+    // printf("\n CP_SeasonAnalysis_Altered [3] = %f",CP_SeasonAnalysis_Altered[3] );
+
+/************************************************************************************************************/
+/*find the conditional probability (normal gaussian)parameter of Age of Analysis under Diagnosis=normal=0 and Diagnosis=altered=1*/
+/************************************************************************************************************/
+ 
+     for (size_t i = 1; i < 80; ++i)
+     {
+        if(trainingOutput[i][0] == 0.000000)  /*under diagnosis=normal, 0;*/ 
+        {
+            /*Get total sum of Age of Analysis under diagnosis=normal, 0;*/
+            MEAN_Age_Analysis_Normal += trainingFeature[i][1];   
+            VAR_Age_Analysis_Normal += trainingFeature[i][1] * trainingFeature[i][1]; 
+        }
+        else    /*under diagnosis=altered, 1;*/ 
+         {
+            /*Get total sum of Age of Analysis under diagnosis=altered, 1;*/
+            MEAN_Age_Analysis_Altered += trainingFeature[i][1];
+            VAR_Age_Analysis_Altered += trainingFeature[i][1] * trainingFeature[i][1];
+        }
+    }
+    //Calculate mean and variance of Age of Analysis under diagnosis=normal, 0;*/
+    MEAN_Age_Analysis_Normal = MEAN_Age_Analysis_Normal / yNormalCounter; 
+    VAR_Age_Analysis_Normal = (VAR_Age_Analysis_Normal-yNormalCounter*(MEAN_Age_Analysis_Normal*MEAN_Age_Analysis_Normal))/(yNormalCounter-1);
+
+    //Calculate mean and variance of Age of Analysis under diagnosis=altered, 1;*/
+    MEAN_Age_Analysis_Altered = MEAN_Age_Analysis_Altered / yAlteredCounter; 
+    VAR_Age_Analysis_Altered = (VAR_Age_Analysis_Altered-yAlteredCounter*(MEAN_Age_Analysis_Altered*MEAN_Age_Analysis_Altered))/(yAlteredCounter-1);
+
+/************************************************************************************************************/
+/*Find the conditional probability of Child Disease under Diagnosis=normal=0*/
+/************************************************************************************************************/
+    CP_Childish_Disease_Normal[0] = 0; /*under diagnosis=normal, Yes;*/ 
+    CP_Childish_Disease_Normal[1] = 0; /*under diagnosis=normal, No;*/ 
+   
+    for (size_t i = 0; i < 80; i++)
+    {
+         if(trainingFeature[i][2] == 0.000000) /*under diagnosis=normal, Yes;*/ 
+         {
+                CP_Childish_Disease_Normal[0] = CP_Childish_Disease_Normal[0] + 1;  
+         }
+         if(trainingFeature[i][2] == 1.000000) /*under diagnosis=normal, No;*/ 
+         {
+                CP_Childish_Disease_Normal[1]=  CP_Childish_Disease_Normal[1] + 1; 
+         }
+        
+    }
+   
+    CP_Childish_Disease_Normal[0] /= yNormalCounter;
+    CP_Childish_Disease_Normal[1] /= yNormalCounter;
+   
+/************************************************************************************************************/
+/*Find the conditional probability of Child Disease under Diagnosis=altered=1*/
+/************************************************************************************************************/
+    CP_Childish_Disease_Altered[0] = 0.000000; /*under diagnosis=Altered, Yes;*/ 
+    CP_Childish_Disease_Altered[1] = 0.000000; /*under diagnosis=Altered, No;*/ 
+   
+    for (size_t i = 0; i < 80; i++)
+    {   
+         if(trainingFeature[i][2] == 0.000000) /*under diagnosis=Altered, Yes;*/ 
+         {  
+                CP_Childish_Disease_Altered[0] = CP_Childish_Disease_Altered[0] + 1;
+         }
+         if(trainingFeature[i][2] == 1.000000) /*under diagnosis=Altered, No;*/ 
+         {
+                CP_Childish_Disease_Altered[1] = CP_Childish_Disease_Altered[1] + 1;
+         }
+        
+    }
+ 
+    CP_Childish_Disease_Altered[0] /= yAlteredCounter;
+    CP_Childish_Disease_Altered[1] /= yAlteredCounter;
+  
+/************************************************************************************************************/
+/*Find the conditional probability of Accident Trauma under Diagnosis=normal=0*/
+/************************************************************************************************************/
+    CP_Accident_Trauma_normal[0] = 0.000000; /*under diagnosis=normal, Yes;*/ 
+    CP_Accident_Trauma_normal[1] = 0.000000; /*under diagnosis=normal, No;*/ 
+   
+    for (size_t i = 0; i < 80; i++)
+    {   
+         if(trainingFeature[i][3] == 0.000000) /*under diagnosis=normal, Yes;*/ 
+         {  
+                CP_Accident_Trauma_normal[0] = CP_Accident_Trauma_normal[0] + 1;
+         }
+         if(trainingFeature[i][3] == 1.000000) /*under diagnosis=normal, No;*/ 
+         {
+                CP_Accident_Trauma_normal[1] = CP_Accident_Trauma_normal[1] + 1;
+         }
+        
+    }
+ 
+    CP_Accident_Trauma_normal[0] /= yNormalCounter;
+    CP_Accident_Trauma_normal[1] /= yNormalCounter;
+  
+/************************************************************************************************************/
+/*Find the conditional probability of Accident Trauma under Diagnosis=altered=1*/
+/************************************************************************************************************/
+    CP_Accident_Trauma_Altered[0] = 0.000000; /*under diagnosis=altered, Yes;*/ 
+    CP_Accident_Trauma_Altered[1] = 0.000000; /*under diagnosis=altered, No;*/ 
+   
+    for (size_t i = 0; i < 80; i++)
+    {   
+         if(trainingFeature[i][3] == 0.000000) /*under diagnosis=altered, Yes;*/ 
+         {  
+                CP_Accident_Trauma_Altered[0] = CP_Accident_Trauma_Altered[0] + 1;
+         }
+         if(trainingFeature[i][3] == 1.000000) /*under diagnosis=altered, No;*/ 
+         {
+                CP_Accident_Trauma_Altered[1] = CP_Accident_Trauma_Altered[1] + 1;
+         }
+        
+    }
+ 
+    CP_Accident_Trauma_Altered[0] /= yAlteredCounter;
+    CP_Accident_Trauma_Altered[1] /= yAlteredCounter;
+  
+/************************************************************************************************************/
+/*Find the conditional probability of Surgical Intervention under Diagnosis=normal=0*/
+/************************************************************************************************************/
+    CP_Surgical_Intervention_Normal[0] = 0.000000; /*under diagnosis=normal, Yes;*/ 
+    CP_Surgical_Intervention_Normal[1] = 0.000000; /*under diagnosis=normal, No;*/ 
+   
+    for (size_t i = 0; i < 80; i++)
+    {   
+         if(trainingFeature[i][4] == 0.000000) /*under diagnosis=normal, Yes;*/ 
+         {  
+                CP_Surgical_Intervention_Normal[0] = CP_Surgical_Intervention_Normal[0] + 1;
+         }
+         if(trainingFeature[i][4] == 1.000000) /*under diagnosis=normal, No;*/ 
+         {
+                CP_Surgical_Intervention_Normal[1] = CP_Surgical_Intervention_Normal[1] + 1;
+         }
+        
+    }
+ 
+    CP_Surgical_Intervention_Normal[0] /= yNormalCounter;
+    CP_Surgical_Intervention_Normal[1] /= yNormalCounter;
+
+/************************************************************************************************************/
+/*Find the conditional probability of Surgical Intervention under Diagnosis=altered=1*/
+/************************************************************************************************************/
+    CP_Surgical_Intervention_Altered[0] = 0.000000; /*under diagnosis=altered, Yes;*/ 
+    CP_Surgical_Intervention_Altered[1] = 0.000000; /*under diagnosis=altered, No;*/ 
+   
+    for (size_t i = 0; i < 80; i++)
+    {   
+         if(trainingFeature[i][4] == 0.000000) /*under diagnosis=altered, Yes;*/ 
+         {  
+                CP_Surgical_Intervention_Altered[0] = CP_Surgical_Intervention_Altered[0] + 1;
+         }
+         if(trainingFeature[i][4] == 1.000000) /*under diagnosis=altered, No;*/ 
+         {
+                CP_Surgical_Intervention_Altered[1] = CP_Surgical_Intervention_Altered[1] + 1;
+         }
+        
+    }
+ 
+    CP_Surgical_Intervention_Altered[0] /= yAlteredCounter;
+    CP_Surgical_Intervention_Altered[1] /= yAlteredCounter;
+
+/************************************************************************************************************/
+/*Find the conditional probability of High Fever under Diagnosis=normal=0*/
+/************************************************************************************************************/
+    CP_High_Fever_Normal[0] = 0.000000; /*under diagnosis=normal, Less than 3 months ago;*/ 
+    CP_High_Fever_Normal[1] = 0.000000; /*under diagnosis=normal, More than 3 months ago;*/ 
+    CP_High_Fever_Normal[2] = 0.000000; /*under diagnosis=normal, No;*/ 
+
+   
+    for (size_t i = 0; i < 80; i++)
+    {   
+         if(trainingFeature[i][5] == -1.000000)/*under diagnosis=normal, Less than 3 months ago;*/ 
+         {  
+                CP_High_Fever_Normal[0] = CP_High_Fever_Normal[0] + 1;
+         }
+         if(trainingFeature[i][5] == 0.000000) /*under diagnosis=normal, More than 3 months ago;*/ 
+         {
+                CP_High_Fever_Normal[1] = CP_High_Fever_Normal[1] + 1;
+         }
+          if(trainingFeature[i][5] == 1.000000) /*under diagnosis=normal, No;*/  
+         {
+                CP_High_Fever_Normal[2] = CP_High_Fever_Normal[2] + 1;
+         }
+        
+    }
+ 
+    CP_High_Fever_Normal[0] /= yNormalCounter;
+    CP_High_Fever_Normal[1] /= yNormalCounter;
+    CP_High_Fever_Normal[2] /= yNormalCounter;
+
+/************************************************************************************************************/
+/*Find the conditional probability of High Fever under Diagnosis=altered=1*/
+/************************************************************************************************************/
+    CP_High_Fever_Altered[0] = 0.000000; /*under diagnosis=altered, Less than 3 months ago;*/ 
+    CP_High_Fever_Altered[1] = 0.000000; /*under diagnosis=altered, More than 3 months ago;*/ 
+    CP_High_Fever_Altered[2] = 0.000000; /*under diagnosis=altered, No;*/ 
+
+   
+    for (size_t i = 0; i < 80; i++)
+    {   
+         if(trainingFeature[i][5] == -1.000000)/*under diagnosis=altered, Less than 3 months ago;*/ 
+         {  
+                CP_High_Fever_Altered[0] = CP_High_Fever_Altered[0] + 1;
+         }
+         if(trainingFeature[i][5] == 0.000000) /*under diagnosis=altered, More than 3 months ago;*/ 
+         {
+                CP_High_Fever_Altered[1] = CP_High_Fever_Altered[1] + 1;
+         }
+          if(trainingFeature[i][5] == 1.000000) /*under diagnosis=altered, No;*/  
+         {
+                CP_High_Fever_Altered[2] = CP_High_Fever_Altered[2] + 1;
+         }
+        
+    }
+ 
+    CP_High_Fever_Altered[0] /= yAlteredCounter;
+    CP_High_Fever_Altered[1] /= yAlteredCounter;
+    CP_High_Fever_Altered[2] /= yAlteredCounter;
+
+/************************************************************************************************************/
+/*Find the conditional probability of Alcohol Consumption under Diagnosis=normal=0*/
+/************************************************************************************************************/
+    CP_Alcohol_Consumption_Normal[0] = 0.000000; /*under diagnosis=normal, Several time a day;*/ 
+    CP_Alcohol_Consumption_Normal[1] = 0.000000; /*under diagnosis=normal, Every day;*/ 
+    CP_Alcohol_Consumption_Normal[2] = 0.000000; /*under diagnosis=normal, Several time a week;*/ 
+    CP_Alcohol_Consumption_Normal[3] = 0.000000; /*under diagnosis=normal, Once a week;*/ 
+    CP_Alcohol_Consumption_Normal[4] = 0.000000; /*under diagnosis=normal, Hardly ever or never;*/ 
+
+   
+    for (size_t i = 0; i < 80; i++)
+    {   
+         if(trainingFeature[i][6] == 0.200000)/*under diagnosis=normal, Several time a day;*/ 
+         {  
+                CP_Alcohol_Consumption_Normal[0] = CP_Alcohol_Consumption_Normal[0] + 1;
+         }
+         if(trainingFeature[i][6] == 0.400000) /*under diagnosis=normal, Every day;*/ 
+         {
+                CP_Alcohol_Consumption_Normal[1] = CP_Alcohol_Consumption_Normal[1] + 1;
+         }
+          if(trainingFeature[i][6] == 0.600000) /*under diagnosis=normal, Several time a week;*/ 
+         {
+                CP_Alcohol_Consumption_Normal[2] = CP_Alcohol_Consumption_Normal[2] + 1;
+         }
+          if(trainingFeature[i][6] == 0.800000) /*under diagnosis=normal, Once a week;*/ 
+         {
+                CP_Alcohol_Consumption_Normal[3] = CP_Alcohol_Consumption_Normal[3] + 1;
+         }
+          if(trainingFeature[i][6] == 1.000000)  /*under diagnosis=normal, Hardly ever or never;*/ 
+         {
+                CP_Alcohol_Consumption_Normal[4] = CP_Alcohol_Consumption_Normal[4] + 1;
+         }
+        
+    }
+ 
+    CP_Alcohol_Consumption_Normal[0] /= yNormalCounter;
+    CP_Alcohol_Consumption_Normal[1] /= yNormalCounter;
+    CP_Alcohol_Consumption_Normal[2] /= yNormalCounter;
+    CP_Alcohol_Consumption_Normal[3] /= yNormalCounter;
+    CP_Alcohol_Consumption_Normal[4] /= yNormalCounter;
+
+/************************************************************************************************************/
+/*Find the conditional probability of Alcohol Consumption under Diagnosis=altered=1*/
+/************************************************************************************************************/
+    CP_Alcohol_Consumption_Altered[0] = 0.000000; /*under diagnosis=altered, Several time a day;*/ 
+    CP_Alcohol_Consumption_Altered[1] = 0.000000; /*under diagnosis=altered, Every day;*/ 
+    CP_Alcohol_Consumption_Altered[2] = 0.000000; /*under diagnosis=altered, Several time a week;*/ 
+    CP_Alcohol_Consumption_Altered[3] = 0.000000; /*under diagnosis=altered, Once a week;*/ 
+    CP_Alcohol_Consumption_Altered[4] = 0.000000; /*under diagnosis=altered, Hardly ever or never;*/ 
+
+   
+    for (size_t i = 0; i < 80; i++)
+    {   
+         if(trainingFeature[i][6] == 0.200000)/*under diagnosis=altered, Several time a day;*/ 
+         {  
+                CP_Alcohol_Consumption_Altered[0] = CP_Alcohol_Consumption_Altered[0] + 1;
+         }
+         if(trainingFeature[i][6] == 0.400000) /*under diagnosis=altered, Every day;*/ 
+         {
+                CP_Alcohol_Consumption_Altered[1] = CP_Alcohol_Consumption_Altered[1] + 1;
+         }
+          if(trainingFeature[i][6] == 0.600000) /*under diagnosis=altered, Several time a week;*/ 
+         {
+                CP_Alcohol_Consumption_Altered[2] = CP_Alcohol_Consumption_Altered[2] + 1;
+         }
+          if(trainingFeature[i][6] == 0.800000) /*under diagnosis=altered, Once a week;*/ 
+         {
+                CP_Alcohol_Consumption_Altered[3] = CP_Alcohol_Consumption_Altered[3] + 1;
+         }
+          if(trainingFeature[i][6] == 1.000000)  /*under diagnosis=altered, Hardly ever or never;*/ 
+         {
+                CP_Alcohol_Consumption_Altered[4] = CP_Alcohol_Consumption_Altered[4] + 1;
+         }
+        
+    }
+ 
+    CP_Alcohol_Consumption_Altered[0] /= yAlteredCounter;
+    CP_Alcohol_Consumption_Altered[1] /= yAlteredCounter;
+    CP_Alcohol_Consumption_Altered[2] /= yAlteredCounter;
+    CP_Alcohol_Consumption_Altered[3] /= yAlteredCounter;
+    CP_Alcohol_Consumption_Altered[4] /= yAlteredCounter;
+
+/************************************************************************************************************/
+/*Find the conditional probability of Smoking Habit under Diagnosis=normal=0*/
+/************************************************************************************************************/
+    CP_Smoking_Habit_Normal[0] = 0.000000; /*under diagnosis=normal, Never;*/ 
+    CP_Smoking_Habit_Normal[1] = 0.000000; /*under diagnosis=normal, Occasional;*/ 
+    CP_Smoking_Habit_Normal[2] = 0.000000; /*under diagnosis=normal, Daily;*/ 
+   
+   
+    for (size_t i = 0; i < 80; i++)
+    {   
+         if(trainingFeature[i][7] == -1.000000)/*under diagnosis=normal, Never;*/ 
+         {  
+                CP_Smoking_Habit_Normal[0] = CP_Smoking_Habit_Normal[0] + 1;
+         }
+         if(trainingFeature[i][7] == 0.000000) /*under diagnosis=normal, Occasional;*/ 
+         {
+                CP_Smoking_Habit_Normal[1] = CP_Smoking_Habit_Normal[1] + 1;
+         }
+          if(trainingFeature[i][7] == 1.000000) /*under diagnosis=normal, Daily;*/ 
+         {
+                CP_Smoking_Habit_Normal[2] = CP_Smoking_Habit_Normal[2] + 1;
+         }
+       
+        
+    }
+    CP_Smoking_Habit_Normal[0] /= yNormalCounter;
+    CP_Smoking_Habit_Normal[1] /= yNormalCounter;
+    CP_Smoking_Habit_Normal[2] /= yNormalCounter;
+   
+/************************************************************************************************************/
+/*Find the conditional probability of Smoking Habit  under Diagnosis=altered=1*/
+/************************************************************************************************************/
+    CP_Smoking_Habit_Altered[0] = 0.000000; /*under diagnosis=altered, Never;*/ 
+    CP_Smoking_Habit_Altered[1] = 0.000000; /*under diagnosis=altered, Occasional;*/ 
+    CP_Smoking_Habit_Altered[2] = 0.000000; /*under diagnosis=altered, Daily;*/ 
+   
+   
+    for (size_t i = 0; i < 80; i++)
+    {   
+         if(trainingFeature[i][7] == -1.000000)/*under diagnosis=altered, Never;*/ 
+         {  
+                CP_Smoking_Habit_Altered[0] = CP_Smoking_Habit_Altered[0] + 1;
+         }
+         if(trainingFeature[i][7] == 0.000000) /*under diagnosis=altered, Occasional;*/ 
+         {
+                CP_Smoking_Habit_Altered[1] = CP_Smoking_Habit_Altered[1] + 1;
+         }
+          if(trainingFeature[i][7] == 1.000000) /*under diagnosis=altered, Daily;*/ 
+         {
+                CP_Smoking_Habit_Altered[2] = CP_Smoking_Habit_Altered[2] + 1;
+         }
+       
+        
+    }
+    CP_Smoking_Habit_Altered[0] /= yAlteredCounter;
+    CP_Smoking_Habit_Altered[1] /= yAlteredCounter;
+    CP_Smoking_Habit_Altered[2] /= yAlteredCounter;
+   
+
+/***************************************************************************************************************************************************/
+/*find the conditional probability (normal gaussian)parameter of number of hour spent sitting per day under Diagnosis=normal=0 and Diagnosis=altered=1*/
+/***************************************************************************************************************************************************/
+ 
+     for (size_t i = 1; i < 80; ++i)
+     {
+        if(trainingOutput[i][0] == 0.000000)  /*under diagnosis=normal, 0;*/ 
+        {
+            /*Get total sum of number of hour spent sitting per day under diagnosis=normal, 0;*/
+            MEAN_Hour_Sitting_Normal += trainingFeature[i][8];   
+            VAR_Hour_Sitting_Normal += trainingFeature[i][8] * trainingFeature[i][8]; 
+        }
+        else    /*under diagnosis=altered, 1;*/ 
+         {
+            /*Get total sum of number of hour spent sitting per day under diagnosis=altered, 1;*/
+            MEAN_Hour_Sitting_Altered += trainingFeature[i][8];
+            VAR_Hour_Sitting_Altered += trainingFeature[i][8] * trainingFeature[i][8];
+        }
+    }
+    //Calculate mean and variance of number of hour spent sitting per day under diagnosis=normal, 0;*/
+    MEAN_Hour_Sitting_Normal = MEAN_Hour_Sitting_Normal / yNormalCounter; 
+    VAR_Hour_Sitting_Normal = (VAR_Hour_Sitting_Normal-yNormalCounter*(MEAN_Hour_Sitting_Normal*MEAN_Hour_Sitting_Normal))/(yNormalCounter-1);
+
+    //Calculate mean and variance of number of hour spent sitting per day under diagnosis=altered, 1;*/
+    MEAN_Hour_Sitting_Altered = MEAN_Hour_Sitting_Altered / yAlteredCounter; 
+    VAR_Hour_Sitting_Altered = (VAR_Hour_Sitting_Altered-yAlteredCounter*(MEAN_Hour_Sitting_Altered*MEAN_Hour_Sitting_Altered))/(yAlteredCounter-1);
+
+
+}
+
+
+
+    
