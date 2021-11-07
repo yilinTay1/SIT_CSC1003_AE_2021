@@ -29,6 +29,34 @@ int yAlteredCounter = 0; /*Counter for Altered diagnosis*/
 int yNormalCounter = 0; /*Counter for Normal diagnosis*/
 
 
+double CP_SeasonAnalysis_Normal[3];    /*Training set: conditional probability of Season Analysis under normal diagnosis*/
+double CP_SeasonAnalysis_Altered[3];   /*Training set: conditional probability of Season Analysis under altered diagnosis*/
+double CP_Childish_Disease_Normal[1];  /*Training set: conditional probability of Childish Disease under normal diagnosis*/
+double CP_Childish_Disease_Altered[1]; /*Training set: conditional probability of Childish Disease under altered diagnosis*/
+double CP_Accident_Trauma_normal[1];   /*Training set: conditional probability of Accident Trauma under normal diagnosis*/
+double CP_Accident_Trauma_Altered[1];  /*Training set: conditional probability of Accident Trauma  under altered diagnosis*/
+double CP_Surgical_Intervention_Normal[1];  /*Training set: conditional probability of Surgical Intervention under normal diagnosis*/
+double CP_Surgical_Intervention_Altered[1];  /*Training set: conditional probability of Surgical Intervention under altered diagnosis*/
+double CP_High_Fever_Normal[2];  /*Training set: conditional probability of High Fever under normal diagnosis*/
+double CP_High_Fever_Altered[2];  /*Training set: conditional probability of High Fever  under altered diagnosis*/
+double CP_Alcohol_Consumption_Normal[4];  /*Training set: conditional probability of Alcohol Consumption under normal diagnosis*/
+double CP_Alcohol_Consumption_Altered[4];  /*Training set: conditional probability of Alcohol Consumption under altered diagnosis*/
+double CP_Smoking_Habit_Normal[2];  /*Training set: conditional probability of Smoking Habit under normal diagnosis*/
+double CP_Smoking_Habit_Altered[2];  /*Training set: conditional probability of Smoking Habit under altered diagnosis*/
+
+double MEAN_Age_Analysis_Normal = 0.0; /*Training set: mean of Age of Analysis for Gaussian PDF under normal diagnosis*/
+double MEAN_Age_Analysis_Altered = 0.0; /*Training set: mean of Age of Analysis for Gaussian PDF under altered diagnosis*/
+double VAR_Age_Analysis_Normal= 0.0;/*Training set: variance of Age of Analysis for Gaussian PDF under normal diagnosis*/
+double VAR_Age_Analysis_Altered= 0.0; /*Training set: variance of Age of Analysis for Gaussian PDF under altered diagnosis*/
+
+
+double MEAN_Hour_Sitting_Normal= 0.0;/*Training set: mean of number of hour spent sitting per day for Gaussian PDF under normal diagnosis*/
+double MEAN_Hour_Sitting_Altered= 0.0;/*Training set:mean of number of hour spent sitting per day for Gaussian PDF under altered diagnosis*/
+double VAR_Hour_Sitting_Normal= 0.0;/*Training set: variance of number of hour spent sitting per day for Gaussian PDF under normal diagnosis*/
+double VAR_Hour_Sitting_Altered= 0.0;/*Training set: variance of number of hour spent sitting per day for Gaussian PDF under altered diagnosis*/
+
+
+
 
 void main(void)
 {
@@ -140,6 +168,8 @@ void priorProbability(void)
             yAlteredCounter += 1;
         }
     }
+    yNormalCounter = 80 - yAlteredCounter;
+
     yAlteredProbability = (float)yAlteredCounter / (float)80;
 
     priorProbability_Altered = yAlteredProbability;
