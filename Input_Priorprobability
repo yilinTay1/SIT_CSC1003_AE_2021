@@ -200,29 +200,43 @@ void conditionalProbability(void)
 
     for (size_t i = 0; i < 80; i++)
     {
-         if(trainingFeature[i][0] == -1.000000) /*under diagnosis=Normal, Winter;*/
-         {
-                CP_SeasonAnalysis_Normal[0] = CP_SeasonAnalysis_Normal[0] + 1;  
-         }
-         if(trainingFeature[i][0] == -0.330000) /*under diagnosis=Normal, Spring;*/
-         {
-                CP_SeasonAnalysis_Normal[1]=  CP_SeasonAnalysis_Normal[1] + 1; 
-         }
-         if(trainingFeature[i][0] ==0.330000) /*under diagnosis=Normal, Summer;*/
-         {
-                CP_SeasonAnalysis_Normal[2] =  CP_SeasonAnalysis_Normal[2] + 1; 
-         }
-         if(trainingFeature[i][0] ==1.000000) /*under diagnosis=Normal, Fall;*/
-         {
-              CP_SeasonAnalysis_Normal[3] =   CP_SeasonAnalysis_Normal[3] +1; 
-         }
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][0] == -1.000000)) /*under diagnosis=Normal, Winter;*/
+       {
+              CP_SeasonAnalysis_Normal[0] = CP_SeasonAnalysis_Normal[0] + 1;  
+       }
+
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][0] == -0.330000))/*under diagnosis=Normal, Spring;*/
+       {
+              CP_SeasonAnalysis_Normal[1]=  CP_SeasonAnalysis_Normal[1] + 1; 
+       }
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][0] == 0.330000))/*under diagnosis=Normal, Summer;*/
+       {
+               CP_SeasonAnalysis_Normal[2] =  CP_SeasonAnalysis_Normal[2] + 1; 
+       }
+
+        if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][0] == 1.000000))/*under diagnosis=Normal, Fall;*/
+       {
+               CP_SeasonAnalysis_Normal[3] =  CP_SeasonAnalysis_Normal[3] + 1; 
+       }
+             
     }
-  
+
+    printf("\n CP_SeasonAnalysis_Normal [0] = %f",CP_SeasonAnalysis_Normal[0] );
+    printf("\n CP_SeasonAnalysis_Normal [1] = %f",CP_SeasonAnalysis_Normal[1] );
+    printf("\n CP_SeasonAnalysis_Normal [2] = %f",CP_SeasonAnalysis_Normal[2] );
+    printf("\n CP_SeasonAnalysis_Normal [3] = %f",CP_SeasonAnalysis_Normal[3] );
     CP_SeasonAnalysis_Normal[0] /= yNormalCounter;
     CP_SeasonAnalysis_Normal[1] /= yNormalCounter;
     CP_SeasonAnalysis_Normal[2] /= yNormalCounter;
     CP_SeasonAnalysis_Normal[3] /= yNormalCounter;
-  
+    printf("\n CP_SeasonAnalysis_Normal [0] = %f",CP_SeasonAnalysis_Normal[0] );
+    printf("\n CP_SeasonAnalysis_Normal [1] = %f",CP_SeasonAnalysis_Normal[1] );
+    printf("\n CP_SeasonAnalysis_Normal [2] = %f",CP_SeasonAnalysis_Normal[2] );
+    printf("\n CP_SeasonAnalysis_Normal [3] = %f",CP_SeasonAnalysis_Normal[3] );
+ 
    
 /************************************************************************************************************/
 /*Find the conditional probability of Season of Analysis under Diagnosis=Altered=1*/
@@ -232,39 +246,44 @@ void conditionalProbability(void)
     CP_SeasonAnalysis_Altered[2] = 0; /*under diagnosis=Altered, Summer;*/
     CP_SeasonAnalysis_Altered[3] = 0; /*under diagnosis=Altered, Fall;*/ 
 
-    for (size_t i = 0; i < 80; i++)
+       for (size_t i = 0; i < 80; i++)
+       {
 
-    {
-         if(trainingFeature[i][0] == -1.000000) /*under diagnosis=Altered, Winter;*/
-         {
-                CP_SeasonAnalysis_Altered[0] = CP_SeasonAnalysis_Altered[0] + 1;  
-         }
-         if(trainingFeature[i][0] == -0.330000) /*under diagnosis=Altered, Spring;*/
-         {
-                CP_SeasonAnalysis_Altered[1]=  CP_SeasonAnalysis_Altered[1] + 1; 
-         }
-         if(trainingFeature[i][0] ==0.330000) /*under diagnosis=Altered, Summer;*/
-         {
-                CP_SeasonAnalysis_Altered[2] =  CP_SeasonAnalysis_Altered[2] + 1; 
-         }
-         if(trainingFeature[i][0] ==1.000000) /*under diagnosis=Altered, Fall;*/ 
-         {
-              CP_SeasonAnalysis_Altered[3] =   CP_SeasonAnalysis_Altered[3] +1; 
-         }
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][0] == -1.000000)) /*under diagnosis=Altered, Winter;*/
+       {
+              CP_SeasonAnalysis_Altered[0] = CP_SeasonAnalysis_Altered[0] + 1;  
+       }
+
+
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][0] == -0.330000))/*under diagnosis=Altered, Spring;*/
+       {
+              CP_SeasonAnalysis_Altered[1]=  CP_SeasonAnalysis_Altered[1] + 1; 
+       }
+
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][0] == 0.330000))/*under diagnosis=Altered, Summer;*/
+       {
+               CP_SeasonAnalysis_Altered[2] =  CP_SeasonAnalysis_Altered[2] + 1; 
+       }
+
+        if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][0] == 1.000000))/*under diagnosis=Altered, Fall;*/ 
+       {
+               CP_SeasonAnalysis_Altered[3] =  CP_SeasonAnalysis_Altered[3] + 1; 
+       }
+             
     }
-    // printf("\n CP_SeasonAnalysis_Altered [0] = %f",CP_SeasonAnalysis_Altered[0] );
-    // printf("\n CP_SeasonAnalysis_Altered [1] = %f",CP_SeasonAnalysis_Altered[1] );
-    // printf("\n CP_SeasonAnalysis_Altered [2] = %f",CP_SeasonAnalysis_Altered[2] );
-    // printf("\n CP_SeasonAnalysis_Altered [3] = %f",CP_SeasonAnalysis_Altered[3] );
+    printf("\n CP_SeasonAnalysis_Altered [0] = %f",CP_SeasonAnalysis_Altered[0] );
+    printf("\n CP_SeasonAnalysis_Altered [1] = %f",CP_SeasonAnalysis_Altered[1] );
+    printf("\n CP_SeasonAnalysis_Altered [2] = %f",CP_SeasonAnalysis_Altered[2] );
+    printf("\n CP_SeasonAnalysis_Altered [3] = %f",CP_SeasonAnalysis_Altered[3] );
     CP_SeasonAnalysis_Altered[0] /= yAlteredCounter;
     CP_SeasonAnalysis_Altered[1] /= yAlteredCounter;
     CP_SeasonAnalysis_Altered[2] /= yAlteredCounter;
     CP_SeasonAnalysis_Altered[3] /= yAlteredCounter;
-    // printf("\n After Calculation");
-    // printf("\n CP_SeasonAnalysis_Altered [0] = %f",CP_SeasonAnalysis_Altered[0] );
-    // printf("\n CP_SeasonAnalysis_Altered [1] = %f",CP_SeasonAnalysis_Altered[1] );
-    // printf("\n CP_SeasonAnalysis_Altered [2] = %f",CP_SeasonAnalysis_Altered[2] );
-    // printf("\n CP_SeasonAnalysis_Altered [3] = %f",CP_SeasonAnalysis_Altered[3] );
+    printf("\n After Calculation");
+    printf("\n CP_SeasonAnalysis_Altered [0] = %f",CP_SeasonAnalysis_Altered[0] );
+    printf("\n CP_SeasonAnalysis_Altered [1] = %f",CP_SeasonAnalysis_Altered[1] );
+    printf("\n CP_SeasonAnalysis_Altered [2] = %f",CP_SeasonAnalysis_Altered[2] );
+    printf("\n CP_SeasonAnalysis_Altered [3] = %f",CP_SeasonAnalysis_Altered[3] );
 
 /************************************************************************************************************/
 /*find the conditional probability (normal gaussian)parameter of Age of Analysis under Diagnosis=normal=0 and Diagnosis=altered=1*/
@@ -299,21 +318,30 @@ void conditionalProbability(void)
     CP_Childish_Disease_Normal[0] = 0; /*under diagnosis=normal, Yes;*/ 
     CP_Childish_Disease_Normal[1] = 0; /*under diagnosis=normal, No;*/ 
    
-    for (size_t i = 0; i < 80; i++)
-    {
-         if(trainingFeature[i][2] == 0.000000) /*under diagnosis=normal, Yes;*/ 
-         {
-                CP_Childish_Disease_Normal[0] = CP_Childish_Disease_Normal[0] + 1;  
-         }
-         if(trainingFeature[i][2] == 1.000000) /*under diagnosis=normal, No;*/ 
-         {
-                CP_Childish_Disease_Normal[1]=  CP_Childish_Disease_Normal[1] + 1; 
-         }
-        
+     for (size_t i = 0; i < 80; i++)
+       {
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][2] == 0.000000)) /*under diagnosis=normal, Yes;*/ 
+       {
+              CP_Childish_Disease_Normal[0] = CP_Childish_Disease_Normal[0] + 1;  
+       }
+
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][2] == 1.000000))/*under diagnosis=normal, No;*/ 
+       {
+              CP_Childish_Disease_Normal[1]=  CP_Childish_Disease_Normal[1] + 1; 
+       }
+
+             
     }
-   
+    printf("\n CP_Childish_Disease_Normal [0] = %f",CP_Childish_Disease_Normal[0] );
+    printf("\n CP_Childish_Disease_Normal [1] = %f",CP_Childish_Disease_Normal[1] );
     CP_Childish_Disease_Normal[0] /= yNormalCounter;
     CP_Childish_Disease_Normal[1] /= yNormalCounter;
+    printf("\n After Calculation");
+    printf("\n CP_Childish_Disease_Normal [0] = %f",CP_Childish_Disease_Normal[0] );
+    printf("\n CP_Childish_Disease_Normal [1] = %f",CP_Childish_Disease_Normal[1] );
+  
    
 /************************************************************************************************************/
 /*Find the conditional probability of Child Disease under Diagnosis=altered=1*/
@@ -321,21 +349,29 @@ void conditionalProbability(void)
     CP_Childish_Disease_Altered[0] = 0.000000; /*under diagnosis=Altered, Yes;*/ 
     CP_Childish_Disease_Altered[1] = 0.000000; /*under diagnosis=Altered, No;*/ 
    
-    for (size_t i = 0; i < 80; i++)
-    {   
-         if(trainingFeature[i][2] == 0.000000) /*under diagnosis=Altered, Yes;*/ 
-         {  
-                CP_Childish_Disease_Altered[0] = CP_Childish_Disease_Altered[0] + 1;
-         }
-         if(trainingFeature[i][2] == 1.000000) /*under diagnosis=Altered, No;*/ 
-         {
-                CP_Childish_Disease_Altered[1] = CP_Childish_Disease_Altered[1] + 1;
-         }
-        
+     for (size_t i = 0; i < 80; i++)
+       {
+
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][2] == 0.000000)) /*under diagnosis=altered, Yes;*/ 
+       {
+              CP_Childish_Disease_Altered[0] = CP_Childish_Disease_Altered[0] + 1;  
+       }
+
+
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][2] == 1.000000))/*under diagnosis=altered, No;*/ 
+       {
+              CP_Childish_Disease_Altered[1]=  CP_Childish_Disease_Altered[1] + 1; 
+       }
+
+             
     }
- 
+    printf("\n CP_Childish_Disease_Altered [0] = %f",CP_Childish_Disease_Altered[0] );
+    printf("\n CP_Childish_Disease_Altered [1] = %f",CP_Childish_Disease_Altered[1] );
     CP_Childish_Disease_Altered[0] /= yAlteredCounter;
     CP_Childish_Disease_Altered[1] /= yAlteredCounter;
+    printf("\n After Calculation");
+    printf("\n CP_Childish_Disease_Altered [0] = %f",CP_Childish_Disease_Altered[0] );
+    printf("\n CP_Childish_Disease_Altered [1] = %f",CP_Childish_Disease_Altered[1] );
   
 /************************************************************************************************************/
 /*Find the conditional probability of Accident Trauma under Diagnosis=normal=0*/
@@ -343,21 +379,30 @@ void conditionalProbability(void)
     CP_Accident_Trauma_normal[0] = 0.000000; /*under diagnosis=normal, Yes;*/ 
     CP_Accident_Trauma_normal[1] = 0.000000; /*under diagnosis=normal, No;*/ 
    
+
     for (size_t i = 0; i < 80; i++)
-    {   
-         if(trainingFeature[i][3] == 0.000000) /*under diagnosis=normal, Yes;*/ 
-         {  
-                CP_Accident_Trauma_normal[0] = CP_Accident_Trauma_normal[0] + 1;
-         }
-         if(trainingFeature[i][3] == 1.000000) /*under diagnosis=normal, No;*/ 
-         {
-                CP_Accident_Trauma_normal[1] = CP_Accident_Trauma_normal[1] + 1;
-         }
-        
+       {
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][3] == 0.000000)) /*under diagnosis=normal, Yes;*/ 
+       {
+              CP_Accident_Trauma_normal[0] = CP_Accident_Trauma_normal[0] + 1;  
+       }
+
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][3] == 1.000000))/*under diagnosis=normal, No;*/ 
+       {
+              CP_Accident_Trauma_normal[1]=  CP_Accident_Trauma_normal[1] + 1; 
+       }
+
+             
     }
- 
+    printf("\n CP_Accident_Trauma_normal [0] = %f",CP_Accident_Trauma_normal[0] );
+    printf("\n CP_Accident_Trauma_normal [1] = %f",CP_Accident_Trauma_normal[1] );
     CP_Accident_Trauma_normal[0] /= yNormalCounter;
     CP_Accident_Trauma_normal[1] /= yNormalCounter;
+    printf("\n CP_Accident_Trauma_normal [0] = %f",CP_Accident_Trauma_normal[0] );
+    printf("\n CP_Accident_Trauma_normal [1] = %f",CP_Accident_Trauma_normal[1] );
+
   
 /************************************************************************************************************/
 /*Find the conditional probability of Accident Trauma under Diagnosis=altered=1*/
@@ -365,21 +410,30 @@ void conditionalProbability(void)
     CP_Accident_Trauma_Altered[0] = 0.000000; /*under diagnosis=altered, Yes;*/ 
     CP_Accident_Trauma_Altered[1] = 0.000000; /*under diagnosis=altered, No;*/ 
    
-    for (size_t i = 0; i < 80; i++)
-    {   
-         if(trainingFeature[i][3] == 0.000000) /*under diagnosis=altered, Yes;*/ 
-         {  
-                CP_Accident_Trauma_Altered[0] = CP_Accident_Trauma_Altered[0] + 1;
-         }
-         if(trainingFeature[i][3] == 1.000000) /*under diagnosis=altered, No;*/ 
-         {
-                CP_Accident_Trauma_Altered[1] = CP_Accident_Trauma_Altered[1] + 1;
-         }
-        
+     for (size_t i = 0; i < 80; i++)
+       {
+
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][3] == 0.000000)) /*under diagnosis=altered, Yes;*/ 
+       {
+              CP_Accident_Trauma_Altered[0] = CP_Accident_Trauma_Altered[0] + 1;  
+       }
+
+
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][3] == 1.000000))/*under diagnosis=altered, No;*/ 
+       {
+              CP_Accident_Trauma_Altered[1]=  CP_Accident_Trauma_Altered[1] + 1; 
+       }
+
+             
     }
- 
+
+    printf("\n CP_Accident_Trauma_Altered [0] = %f",CP_Accident_Trauma_Altered[0] );
+    printf("\n CP_Accident_Trauma_Altered [1] = %f",CP_Accident_Trauma_Altered[1] );
     CP_Accident_Trauma_Altered[0] /= yAlteredCounter;
     CP_Accident_Trauma_Altered[1] /= yAlteredCounter;
+    printf("\n CP_Accident_Trauma_Altered [0] = %f",CP_Accident_Trauma_Altered[0] );
+    printf("\n CP_Accident_Trauma_Altered [1] = %f",CP_Accident_Trauma_Altered[1] );
+
   
 /************************************************************************************************************/
 /*Find the conditional probability of Surgical Intervention under Diagnosis=normal=0*/
@@ -387,21 +441,29 @@ void conditionalProbability(void)
     CP_Surgical_Intervention_Normal[0] = 0.000000; /*under diagnosis=normal, Yes;*/ 
     CP_Surgical_Intervention_Normal[1] = 0.000000; /*under diagnosis=normal, No;*/ 
    
-    for (size_t i = 0; i < 80; i++)
-    {   
-         if(trainingFeature[i][4] == 0.000000) /*under diagnosis=normal, Yes;*/ 
-         {  
-                CP_Surgical_Intervention_Normal[0] = CP_Surgical_Intervention_Normal[0] + 1;
-         }
-         if(trainingFeature[i][4] == 1.000000) /*under diagnosis=normal, No;*/ 
-         {
-                CP_Surgical_Intervention_Normal[1] = CP_Surgical_Intervention_Normal[1] + 1;
-         }
-        
+    
+     for (size_t i = 0; i < 80; i++)
+       {
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][4] == 0.000000)) /*under diagnosis=normal, Yes;*/ 
+       {
+              CP_Surgical_Intervention_Normal[0] = CP_Surgical_Intervention_Normal[0] + 1;  
+       }
+
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][4] == 1.000000))/*under diagnosis=normal, No;*/ 
+       {
+              CP_Surgical_Intervention_Normal[1]=  CP_Surgical_Intervention_Normal[1] + 1; 
+       }
+
+             
     }
- 
+    printf("\n CP_Surgical_Intervention_Normal [0] = %f",CP_Surgical_Intervention_Normal[0] );
+    printf("\n CP_Surgical_Intervention_Normal [1] = %f",CP_Surgical_Intervention_Normal[1] );
     CP_Surgical_Intervention_Normal[0] /= yNormalCounter;
     CP_Surgical_Intervention_Normal[1] /= yNormalCounter;
+    printf("\n CP_Surgical_Intervention_Normal [0] = %f",CP_Surgical_Intervention_Normal[0] );
+    printf("\n CP_Surgical_Intervention_Normal [1] = %f",CP_Surgical_Intervention_Normal[1] );
 
 /************************************************************************************************************/
 /*Find the conditional probability of Surgical Intervention under Diagnosis=altered=1*/
@@ -410,20 +472,27 @@ void conditionalProbability(void)
     CP_Surgical_Intervention_Altered[1] = 0.000000; /*under diagnosis=altered, No;*/ 
    
     for (size_t i = 0; i < 80; i++)
-    {   
-         if(trainingFeature[i][4] == 0.000000) /*under diagnosis=altered, Yes;*/ 
-         {  
-                CP_Surgical_Intervention_Altered[0] = CP_Surgical_Intervention_Altered[0] + 1;
-         }
-         if(trainingFeature[i][4] == 1.000000) /*under diagnosis=altered, No;*/ 
-         {
-                CP_Surgical_Intervention_Altered[1] = CP_Surgical_Intervention_Altered[1] + 1;
-         }
-        
+       {
+
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][4] == 0.000000)) /*under diagnosis=altered, Yes;*/ 
+       {
+              CP_Surgical_Intervention_Altered[0] = CP_Surgical_Intervention_Altered[0] + 1;  
+       }
+
+
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][4] == 1.000000))/*under diagnosis=altered, No;*/ 
+       {
+              CP_Surgical_Intervention_Altered[1]=  CP_Surgical_Intervention_Altered[1] + 1; 
+       }
+
+             
     }
- 
+    printf("\n CP_Surgical_Intervention_Altered [0] = %f",CP_Surgical_Intervention_Altered[0] );
+    printf("\n CP_Surgical_Intervention_Altered [1] = %f",CP_Surgical_Intervention_Altered[1] );
     CP_Surgical_Intervention_Altered[0] /= yAlteredCounter;
     CP_Surgical_Intervention_Altered[1] /= yAlteredCounter;
+    printf("\n CP_Surgical_Intervention_Altered [0] = %f",CP_Surgical_Intervention_Altered[0] );
+    printf("\n CP_Surgical_Intervention_Altered [1] = %f",CP_Surgical_Intervention_Altered[1] );
 
 /************************************************************************************************************/
 /*Find the conditional probability of High Fever under Diagnosis=normal=0*/
@@ -432,27 +501,38 @@ void conditionalProbability(void)
     CP_High_Fever_Normal[1] = 0.000000; /*under diagnosis=normal, More than 3 months ago;*/ 
     CP_High_Fever_Normal[2] = 0.000000; /*under diagnosis=normal, No;*/ 
 
-   
+
     for (size_t i = 0; i < 80; i++)
-    {   
-         if(trainingFeature[i][5] == -1.000000)/*under diagnosis=normal, Less than 3 months ago;*/ 
-         {  
-                CP_High_Fever_Normal[0] = CP_High_Fever_Normal[0] + 1;
-         }
-         if(trainingFeature[i][5] == 0.000000) /*under diagnosis=normal, More than 3 months ago;*/ 
-         {
-                CP_High_Fever_Normal[1] = CP_High_Fever_Normal[1] + 1;
-         }
-          if(trainingFeature[i][5] == 1.000000) /*under diagnosis=normal, No;*/  
-         {
-                CP_High_Fever_Normal[2] = CP_High_Fever_Normal[2] + 1;
-         }
-        
+       {
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][5] == -1.000000)) /*under diagnosis=normal, Less than 3 months ago;*/ 
+       {
+              CP_High_Fever_Normal[0] = CP_High_Fever_Normal[0] + 1;  
+       }
+
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][5] == 0.000000))/*under diagnosis=normal, More than 3 months ago;*/ 
+       {
+              CP_High_Fever_Normal[1]=  CP_High_Fever_Normal[1] + 1; 
+       }
+
+       if((trainingOutput[i][0] == 0.000000)&& (trainingFeature[i][5] == 1.000000))/*under diagnosis=normal, No;*/ 
+       {
+              CP_High_Fever_Normal[2]=  CP_High_Fever_Normal[2] + 1; 
+       }
+
+             
     }
- 
+    printf("\n CP_High_Fever_Normal [0] = %f",CP_High_Fever_Normal[0] );
+    printf("\n CP_High_Fever_Normal [1] = %f",CP_High_Fever_Normal[1] );
+    printf("\n CP_High_Fever_Normal [2] = %f",CP_High_Fever_Normal[2] );
     CP_High_Fever_Normal[0] /= yNormalCounter;
     CP_High_Fever_Normal[1] /= yNormalCounter;
     CP_High_Fever_Normal[2] /= yNormalCounter;
+    printf("\n CP_High_Fever_Normal [0] = %f",CP_High_Fever_Normal[0] );
+    printf("\n CP_High_Fever_Normal [1] = %f",CP_High_Fever_Normal[1] );
+    printf("\n CP_High_Fever_Normal [2] = %f",CP_High_Fever_Normal[2] );
+
 
 /************************************************************************************************************/
 /*Find the conditional probability of High Fever under Diagnosis=altered=1*/
@@ -463,28 +543,38 @@ void conditionalProbability(void)
 
    
     for (size_t i = 0; i < 80; i++)
-    {   
-         if(trainingFeature[i][5] == -1.000000)/*under diagnosis=altered, Less than 3 months ago;*/ 
-         {  
-                CP_High_Fever_Altered[0] = CP_High_Fever_Altered[0] + 1;
-         }
-         if(trainingFeature[i][5] == 0.000000) /*under diagnosis=altered, More than 3 months ago;*/ 
-         {
-                CP_High_Fever_Altered[1] = CP_High_Fever_Altered[1] + 1;
-         }
-          if(trainingFeature[i][5] == 1.000000) /*under diagnosis=altered, No;*/  
-         {
-                CP_High_Fever_Altered[2] = CP_High_Fever_Altered[2] + 1;
-         }
-        
+       {
+
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][5] == -1.000000)) /*under diagnosis=altered, Less than 3 months ago;*/ 
+       {
+              CP_High_Fever_Altered[0] = CP_High_Fever_Altered[0] + 1;  
+       }
+
+
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][5] == 0.000000))/*under diagnosis=altered, More than 3 months ago;*/ 
+       {
+              CP_High_Fever_Altered[1]=  CP_High_Fever_Altered[1] + 1; 
+       }
+
+       if((trainingOutput[i][0] == 1.000000)&& (trainingFeature[i][5] == 1.000000)) /*under diagnosis=altered, No;*/ 
+       {
+              CP_High_Fever_Altered[2]=  CP_High_Fever_Altered[2] + 1; 
+       }
+
+             
     }
- 
+    printf("\n CP_High_Fever_Altered [0] = %f",CP_High_Fever_Altered[0] );
+    printf("\n CP_High_Fever_Altered [1] = %f",CP_High_Fever_Altered[1] );
+    printf("\n CP_High_Fever_Altered [2] = %f",CP_High_Fever_Altered[2] );
     CP_High_Fever_Altered[0] /= yAlteredCounter;
     CP_High_Fever_Altered[1] /= yAlteredCounter;
     CP_High_Fever_Altered[2] /= yAlteredCounter;
+    printf("\n CP_High_Fever_Altered [0] = %f",CP_High_Fever_Altered[0] );
+    printf("\n CP_High_Fever_Altered [1] = %f",CP_High_Fever_Altered[1] );
+    printf("\n CP_High_Fever_Altered [2] = %f",CP_High_Fever_Altered[2] );
 
 /************************************************************************************************************/
-/*Find the conditional probability of Alcohol Consumption under Diagnosis=normal=0*/
+/*Find the conditional probability of Alcohol Consumption Fever under Diagnosis=normal=0*/
 /************************************************************************************************************/
     CP_Alcohol_Consumption_Normal[0] = 0.000000; /*under diagnosis=normal, Several time a day;*/ 
     CP_Alcohol_Consumption_Normal[1] = 0.000000; /*under diagnosis=normal, Every day;*/ 
@@ -492,40 +582,57 @@ void conditionalProbability(void)
     CP_Alcohol_Consumption_Normal[3] = 0.000000; /*under diagnosis=normal, Once a week;*/ 
     CP_Alcohol_Consumption_Normal[4] = 0.000000; /*under diagnosis=normal, Hardly ever or never;*/ 
 
-   
-    for (size_t i = 0; i < 80; i++)
-    {   
-         if(trainingFeature[i][6] == 0.200000)/*under diagnosis=normal, Several time a day;*/ 
-         {  
-                CP_Alcohol_Consumption_Normal[0] = CP_Alcohol_Consumption_Normal[0] + 1;
-         }
-         if(trainingFeature[i][6] == 0.400000) /*under diagnosis=normal, Every day;*/ 
-         {
-                CP_Alcohol_Consumption_Normal[1] = CP_Alcohol_Consumption_Normal[1] + 1;
-         }
-          if(trainingFeature[i][6] == 0.600000) /*under diagnosis=normal, Several time a week;*/ 
-         {
-                CP_Alcohol_Consumption_Normal[2] = CP_Alcohol_Consumption_Normal[2] + 1;
-         }
-          if(trainingFeature[i][6] == 0.800000) /*under diagnosis=normal, Once a week;*/ 
-         {
-                CP_Alcohol_Consumption_Normal[3] = CP_Alcohol_Consumption_Normal[3] + 1;
-         }
-          if(trainingFeature[i][6] == 1.000000)  /*under diagnosis=normal, Hardly ever or never;*/ 
-         {
-                CP_Alcohol_Consumption_Normal[4] = CP_Alcohol_Consumption_Normal[4] + 1;
-         }
-        
+
+      for (size_t i = 0; i < 80; i++)
+       {
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][6] == 0.200000)) /*under diagnosis=normal, Several time a day;*/ 
+       {
+              CP_Alcohol_Consumption_Normal[0] = CP_Alcohol_Consumption_Normal[0] + 1;  
+       }
+
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][6] == 0.400000))/*under diagnosis=normal, Every day;*/ 
+       {
+              CP_Alcohol_Consumption_Normal[1]=  CP_Alcohol_Consumption_Normal[1] + 1; 
+       }
+
+       if((trainingOutput[i][0] == 0.000000)&& (trainingFeature[i][6] == 0.600000)) /*under diagnosis=normal, Several time a week;*/ 
+       {
+              CP_Alcohol_Consumption_Normal[2]=  CP_Alcohol_Consumption_Normal[2] + 1; 
+       }
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][6] == 0.800000)) /*under diagnosis=normal, Once a week;*/ 
+       {
+              CP_Alcohol_Consumption_Normal[3]=  CP_Alcohol_Consumption_Normal[3] + 1; 
+       }
+       if((trainingOutput[i][0] == 0.000000)&& (trainingFeature[i][6] == 1.000000))  /*under diagnosis=normal, Hardly ever or never;*/  
+       {
+              CP_Alcohol_Consumption_Normal[4]=  CP_Alcohol_Consumption_Normal[4] + 1; 
+       }
+
+             
     }
- 
+    printf("\n CP_Alcohol_Consumption_Normal [0] = %f",CP_Alcohol_Consumption_Normal[0] );
+    printf("\n CP_Alcohol_Consumption_Normal [1] = %f",CP_Alcohol_Consumption_Normal[1] );
+    printf("\n CP_Alcohol_Consumption_Normal [2] = %f",CP_Alcohol_Consumption_Normal[2] );
+    printf("\n CP_Alcohol_Consumption_Normal [3] = %f",CP_Alcohol_Consumption_Normal[3] );
+    printf("\n CP_Alcohol_Consumption_Normal [4] = %f",CP_Alcohol_Consumption_Normal[4] );
+
     CP_Alcohol_Consumption_Normal[0] /= yNormalCounter;
     CP_Alcohol_Consumption_Normal[1] /= yNormalCounter;
     CP_Alcohol_Consumption_Normal[2] /= yNormalCounter;
     CP_Alcohol_Consumption_Normal[3] /= yNormalCounter;
     CP_Alcohol_Consumption_Normal[4] /= yNormalCounter;
 
+    printf("\n CP_Alcohol_Consumption_Normal [0] = %f",CP_Alcohol_Consumption_Normal[0] );
+    printf("\n CP_Alcohol_Consumption_Normal [1] = %f",CP_Alcohol_Consumption_Normal[1] );
+    printf("\n CP_Alcohol_Consumption_Normal [2] = %f",CP_Alcohol_Consumption_Normal[2] );
+    printf("\n CP_Alcohol_Consumption_Normal [3] = %f",CP_Alcohol_Consumption_Normal[3] );
+    printf("\n CP_Alcohol_Consumption_Normal [4] = %f",CP_Alcohol_Consumption_Normal[4] );
+
+
 /************************************************************************************************************/
-/*Find the conditional probability of Alcohol Consumption under Diagnosis=altered=1*/
+/*Find the conditional probability of Alcohol Consumption Fever under Diagnosis=altered=1*/
 /************************************************************************************************************/
     CP_Alcohol_Consumption_Altered[0] = 0.000000; /*under diagnosis=altered, Several time a day;*/ 
     CP_Alcohol_Consumption_Altered[1] = 0.000000; /*under diagnosis=altered, Every day;*/ 
@@ -535,93 +642,126 @@ void conditionalProbability(void)
 
    
     for (size_t i = 0; i < 80; i++)
-    {   
-         if(trainingFeature[i][6] == 0.200000)/*under diagnosis=altered, Several time a day;*/ 
-         {  
-                CP_Alcohol_Consumption_Altered[0] = CP_Alcohol_Consumption_Altered[0] + 1;
-         }
-         if(trainingFeature[i][6] == 0.400000) /*under diagnosis=altered, Every day;*/ 
-         {
-                CP_Alcohol_Consumption_Altered[1] = CP_Alcohol_Consumption_Altered[1] + 1;
-         }
-          if(trainingFeature[i][6] == 0.600000) /*under diagnosis=altered, Several time a week;*/ 
-         {
-                CP_Alcohol_Consumption_Altered[2] = CP_Alcohol_Consumption_Altered[2] + 1;
-         }
-          if(trainingFeature[i][6] == 0.800000) /*under diagnosis=altered, Once a week;*/ 
-         {
-                CP_Alcohol_Consumption_Altered[3] = CP_Alcohol_Consumption_Altered[3] + 1;
-         }
-          if(trainingFeature[i][6] == 1.000000)  /*under diagnosis=altered, Hardly ever or never;*/ 
-         {
-                CP_Alcohol_Consumption_Altered[4] = CP_Alcohol_Consumption_Altered[4] + 1;
-         }
-        
+       {
+
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][6] == 0.200000)) /*under diagnosis=altered, Several time a day;*/ 
+       {
+              CP_Alcohol_Consumption_Altered[0] = CP_Alcohol_Consumption_Altered[0] + 1;  
+       }
+
+
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][6] == 0.400000))/*under diagnosis=altered, Every day;*/ 
+       {
+              CP_Alcohol_Consumption_Altered[1]=  CP_Alcohol_Consumption_Altered[1] + 1; 
+       }
+
+       if((trainingOutput[i][0] == 1.000000)&& (trainingFeature[i][6] == 0.600000)) /*under diagnosis=altered, Several time a week;*/ 
+       {
+              CP_Alcohol_Consumption_Altered[2]=  CP_Alcohol_Consumption_Altered[2] + 1; 
+       }
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][6] == 0.800000)) /*under diagnosis=altered, Once a week;*/ 
+       {
+              CP_Alcohol_Consumption_Altered[3]=  CP_Alcohol_Consumption_Altered[3] + 1; 
+       }
+       if((trainingOutput[i][0] == 1.000000)&& (trainingFeature[i][6] == 1.000000))  /*under diagnosis=altered, Hardly ever or never;*/  
+       {
+              CP_Alcohol_Consumption_Altered[4]=  CP_Alcohol_Consumption_Altered[4] + 1; 
+       }
+
+             
     }
- 
+    printf("\n CP_Alcohol_Consumption_Altered [0] = %f",CP_Alcohol_Consumption_Altered[0] );
+    printf("\n CP_Alcohol_Consumption_Altered [1] = %f",CP_Alcohol_Consumption_Altered[1] );
+    printf("\n CP_Alcohol_Consumption_Altered [2] = %f",CP_Alcohol_Consumption_Altered[2] );
+    printf("\n CP_Alcohol_Consumption_Altered [3] = %f",CP_Alcohol_Consumption_Altered[3] );
+    printf("\n CP_Alcohol_Consumption_Altered [4] = %f",CP_Alcohol_Consumption_Altered[4] );
     CP_Alcohol_Consumption_Altered[0] /= yAlteredCounter;
     CP_Alcohol_Consumption_Altered[1] /= yAlteredCounter;
     CP_Alcohol_Consumption_Altered[2] /= yAlteredCounter;
     CP_Alcohol_Consumption_Altered[3] /= yAlteredCounter;
     CP_Alcohol_Consumption_Altered[4] /= yAlteredCounter;
+    printf("\n CP_Alcohol_Consumption_Altered [0] = %f",CP_Alcohol_Consumption_Altered[0] );
+    printf("\n CP_Alcohol_Consumption_Altered [1] = %f",CP_Alcohol_Consumption_Altered[1] );
+    printf("\n CP_Alcohol_Consumption_Altered [2] = %f",CP_Alcohol_Consumption_Altered[2] );
+    printf("\n CP_Alcohol_Consumption_Altered [3] = %f",CP_Alcohol_Consumption_Altered[3] );
+    printf("\n CP_Alcohol_Consumption_Altered [4] = %f",CP_Alcohol_Consumption_Altered[4] );
 
 /************************************************************************************************************/
-/*Find the conditional probability of Smoking Habit under Diagnosis=normal=0*/
+/*Find the conditional probability of Smoking Habit Fever under Diagnosis=normal=0*/
 /************************************************************************************************************/
     CP_Smoking_Habit_Normal[0] = 0.000000; /*under diagnosis=normal, Never;*/ 
     CP_Smoking_Habit_Normal[1] = 0.000000; /*under diagnosis=normal, Occasional;*/ 
     CP_Smoking_Habit_Normal[2] = 0.000000; /*under diagnosis=normal, Daily;*/ 
    
    
-    for (size_t i = 0; i < 80; i++)
-    {   
-         if(trainingFeature[i][7] == -1.000000)/*under diagnosis=normal, Never;*/ 
-         {  
-                CP_Smoking_Habit_Normal[0] = CP_Smoking_Habit_Normal[0] + 1;
-         }
-         if(trainingFeature[i][7] == 0.000000) /*under diagnosis=normal, Occasional;*/ 
-         {
-                CP_Smoking_Habit_Normal[1] = CP_Smoking_Habit_Normal[1] + 1;
-         }
-          if(trainingFeature[i][7] == 1.000000) /*under diagnosis=normal, Daily;*/ 
-         {
-                CP_Smoking_Habit_Normal[2] = CP_Smoking_Habit_Normal[2] + 1;
-         }
-       
-        
+     for (size_t i = 0; i < 80; i++)
+       {
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][7] == -1.000000)) /*under diagnosis=normal, Never;*/ 
+       {
+              CP_Smoking_Habit_Normal[0] = CP_Smoking_Habit_Normal[0] + 1;  
+       }
+
+
+       if((trainingOutput[i][0] == 0.000000)&&(trainingFeature[i][7] == 0.000000))/*under diagnosis=normal, Occasional;*/ 
+       {
+              CP_Smoking_Habit_Normal[1]=  CP_Smoking_Habit_Normal[1] + 1; 
+       }
+
+       if((trainingOutput[i][0] == 0.000000)&& (trainingFeature[i][7] == 1.000000)) /*under diagnosis=normal, Daily;*/ 
+       {
+              CP_Smoking_Habit_Normal[2]=  CP_Smoking_Habit_Normal[2] + 1; 
+       }
+      
     }
+
+    printf("\n CP_Smoking_Habit_Normal [0] = %f",CP_Smoking_Habit_Normal[0] );
+    printf("\n CP_Smoking_Habit_Normal [1] = %f",CP_Smoking_Habit_Normal[1] );
+    printf("\n CP_Smoking_Habit_Normal [2] = %f",CP_Smoking_Habit_Normal[2] );
     CP_Smoking_Habit_Normal[0] /= yNormalCounter;
     CP_Smoking_Habit_Normal[1] /= yNormalCounter;
     CP_Smoking_Habit_Normal[2] /= yNormalCounter;
+    printf("\n CP_Smoking_Habit_Normal [0] = %f",CP_Smoking_Habit_Normal[0] );
+    printf("\n CP_Smoking_Habit_Normal [1] = %f",CP_Smoking_Habit_Normal[1] );
+    printf("\n CP_Smoking_Habit_Normal [2] = %f",CP_Smoking_Habit_Normal[2] );
    
 /************************************************************************************************************/
-/*Find the conditional probability of Smoking Habit  under Diagnosis=altered=1*/
+/*Find the conditional probability of Smoking Habit Fever under Diagnosis=altered=1*/
 /************************************************************************************************************/
     CP_Smoking_Habit_Altered[0] = 0.000000; /*under diagnosis=altered, Never;*/ 
     CP_Smoking_Habit_Altered[1] = 0.000000; /*under diagnosis=altered, Occasional;*/ 
     CP_Smoking_Habit_Altered[2] = 0.000000; /*under diagnosis=altered, Daily;*/ 
    
    
-    for (size_t i = 0; i < 80; i++)
-    {   
-         if(trainingFeature[i][7] == -1.000000)/*under diagnosis=altered, Never;*/ 
-         {  
-                CP_Smoking_Habit_Altered[0] = CP_Smoking_Habit_Altered[0] + 1;
-         }
-         if(trainingFeature[i][7] == 0.000000) /*under diagnosis=altered, Occasional;*/ 
-         {
-                CP_Smoking_Habit_Altered[1] = CP_Smoking_Habit_Altered[1] + 1;
-         }
-          if(trainingFeature[i][7] == 1.000000) /*under diagnosis=altered, Daily;*/ 
-         {
-                CP_Smoking_Habit_Altered[2] = CP_Smoking_Habit_Altered[2] + 1;
-         }
-       
-        
+     for (size_t i = 0; i < 80; i++)
+       {
+
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][7] == -1.000000)) /*under diagnosis=altered, Never;*/ 
+       {
+              CP_Smoking_Habit_Altered[0] = CP_Smoking_Habit_Altered[0] + 1;  
+       }
+
+
+       if((trainingOutput[i][0] == 1.000000)&&(trainingFeature[i][7] == 0.000000))/*under diagnosis=altered, Occasional;*/ 
+       {
+              CP_Smoking_Habit_Altered[1]=  CP_Smoking_Habit_Altered[1] + 1; 
+       }
+
+       if((trainingOutput[i][0] == 1.000000)&& (trainingFeature[i][7] == 1.000000)) /*under diagnosis=altered, Daily;*/ 
+       {
+              CP_Smoking_Habit_Altered[2]=  CP_Smoking_Habit_Altered[2] + 1; 
+       }
+      
     }
+    printf("\n CP_Smoking_Habit_Altered [0] = %f",CP_Smoking_Habit_Altered[0] );
+    printf("\n CP_Smoking_Habit_Altered [1] = %f",CP_Smoking_Habit_Altered[1] );
+    printf("\n CP_Smoking_Habit_Altered [2] = %f",CP_Smoking_Habit_Altered[2] );
     CP_Smoking_Habit_Altered[0] /= yAlteredCounter;
     CP_Smoking_Habit_Altered[1] /= yAlteredCounter;
     CP_Smoking_Habit_Altered[2] /= yAlteredCounter;
+    printf("\n CP_Smoking_Habit_Altered [0] = %f",CP_Smoking_Habit_Altered[0] );
+    printf("\n CP_Smoking_Habit_Altered [1] = %f",CP_Smoking_Habit_Altered[1] );
+    printf("\n CP_Smoking_Habit_Altered [2] = %f",CP_Smoking_Habit_Altered[2] );
    
 
 /***************************************************************************************************************************************************/
@@ -653,7 +793,3 @@ void conditionalProbability(void)
 
 
 }
-
-
-
-    
