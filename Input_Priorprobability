@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 int readingFile(void);        // function Prototypes
 void priorProbability(void); // function Prototypes
@@ -32,6 +33,7 @@ void main(void)
 {
     /* print heading */
     printf("\nInput_priorProbability.c \n");
+    printf("**************************************************************");
 
     /* Input */
     readingFile();
@@ -49,15 +51,17 @@ void main(void)
 int readingFile(void)
 {
     // read from a text file
-    char *filename = "data_Group9_11.txt";
+    char *filename[100];
+    puts("\nEnter the filename to be opened : ");
+    gets(filename);
     FILE *fp = fopen(filename, "r");
 
     if (fp == NULL)
     {
-        printf("Error: could not open file %s", filename);
-        return 1;
+        printf("\nError: Could not open file %s", filename);
+        exit(1);
     }
-    printf("\nSuccess: open dataset file - %s \n", filename);
+    printf("\nSuccess: Open dataset file - %s \n", filename);
 
     int row_Count = 0;
     int row_Count2 = 0;
