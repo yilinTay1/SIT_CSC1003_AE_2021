@@ -7,7 +7,7 @@
 #include <string.h>
 #include <math.h>
 
-int readingFile(void);        // function Prototypes
+int readingFile(void);       // function Prototypes
 void priorProbability(void); // function Prototypes
 
 /* global variable declaration */
@@ -27,7 +27,7 @@ double priorProbability_Normal = 0;
 double priorProbability_Altered = 0;
 
 int yAlteredCounter = 0; //Altered Diagnosis Counter
-int yNormalCounter = 0; //Normal Diagnosis Counter
+int yNormalCounter = 0;  //Normal Diagnosis Counter
 
 void main(void)
 {
@@ -52,16 +52,25 @@ int readingFile(void)
 {
     // read from a text file
     char *filename[100];
-    puts("\nEnter the filename to be opened : ");
-    gets(filename);
-    FILE *fp = fopen(filename, "r");
+    puts("\nEnter the filename of .txt dataset file to be opened: ");
+    gets((char *)filename);
+    FILE *fp = fopen((const char *)filename, "r");
 
     if (fp == NULL)
     {
-        printf("\nError: Could not open file %s", filename);
+        printf("\nError: File entered could not be found - %s", filename);
         exit(1);
     }
-    printf("\nSuccess: Open dataset file - %s \n", filename);
+
+    // verify file extension to be .txt
+    char *fileExtension = strrchr((const char *)filename, '.'); //strrchr locates the last occurrence of a character in a string. 
+    if (strcmp(fileExtension +1, "txt") !=0)
+    {
+        printf("\nError: File of wrong extension - .%s \nPlease enter a file with .txt extension!\n", fileExtension +1);
+        exit(2);
+    }
+    
+    printf("\nSuccess: Opened dataset file - %s \n", filename);
 
     int row_Count = 0;
     int row_Count2 = 0;
@@ -111,7 +120,7 @@ int readingFile(void)
                 }
             }
             col_Count += 1;
-            token = strtok(NULL, ","); //NULL as the first argument, tells the function to continue tokenizing the string you passed in first.
+            token = strtok(NULL, ","); //strtok modifies the original string. It puts NULL characters ('\0') at the delimiter position after every call to strtok so that tokens can be tracked.
         }
 
         if (row_Count >= 80)
