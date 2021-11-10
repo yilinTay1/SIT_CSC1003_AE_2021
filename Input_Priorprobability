@@ -11,19 +11,22 @@ void priorProbability(void); // function Prototypes
 
 /* global variable declaration */
 // split into training set and testing set
-float arrayTraining[80][10];
-float arrayTesting[20][10];
+double arrayTraining[80][10];
+double arrayTesting[20][10];
 
 // further split training set and testing set into feature and output set
-float trainingFeature[80][9];
-float testingFeature[20][9];
+double trainingFeature[80][9];
+double testingFeature[20][9];
 
-float trainingOutput[80][1];
-float testingOutput[20][1];
+double trainingOutput[80][1];
+double testingOutput[20][1];
 
 // prior probability
-float priorProbability_Normal = 0;
-float priorProbability_Altered = 0;
+double priorProbability_Normal = 0;
+double priorProbability_Altered = 0;
+
+int yAlteredCounter = 0; //Altered Diagnosis Counter
+int yNormalCounter = 0; //Normal Diagnosis Counter
 
 void main(void)
 {
@@ -125,7 +128,7 @@ int readingFile(void)
 /*************************************************************/
 void priorProbability(void)
 {
-    int yAlteredCounter = 0;
+    //int yAlteredCounter = 0;
     float yAlteredProbability = 0.0;
 
     for (size_t i = 0; i < 80; i++)
@@ -135,6 +138,7 @@ void priorProbability(void)
             yAlteredCounter += 1;
         }
     }
+    yNormalCounter = 80 - yAlteredCounter;
     yAlteredProbability = (float)yAlteredCounter / (float)80;
 
     priorProbability_Altered = yAlteredProbability;
