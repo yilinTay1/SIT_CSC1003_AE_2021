@@ -118,7 +118,7 @@ void main(void)
         char *token = strtok(buffer, ","); //breaks string-buffer into a series of tokens using the delimiter-",".
 
         // loop through the string to extract all other tokens
-        while (token != NULL)
+        while (token != NULL) ////strtok returns NULL when there is no more tokens, the whole string is split. 
         {
             col_Count = col_Count % 10;
             // training set
