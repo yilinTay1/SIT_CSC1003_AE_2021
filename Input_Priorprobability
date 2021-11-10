@@ -82,20 +82,27 @@ void main(void)
 /* void readingFile(void); */
 /* Tay Yi Lin  2103154@sit.singaporetech.edu.sg              */
 /*************************************************************/
-int readingFile(void)
-{
     // read from a text file
     char *filename[100];
-    puts("\nEnter the filename to be opened : ");
-    gets(filename);
-    FILE *fp = fopen(filename, "r");
+    puts("\nEnter the filename of .txt dataset file to be opened: ");
+    gets((char *)filename);
+    FILE *fp = fopen((const char *)filename, "r");
 
     if (fp == NULL)
     {
-        printf("\nError: Could not open file %s", filename);
+        printf("\nError: File entered could not be found - %s", filename);
         exit(1);
     }
-    printf("\nSuccess: Open dataset file - %s \n", filename);
+
+    // verify file extension to be .txt
+    char *fileExtension = strrchr((const char *)filename, '.'); //strrchr locates the last occurrence of a character in a string. 
+    if (strcmp(fileExtension +1, "txt") !=0)
+    {
+        printf("\nError: File of wrong extension - .%s \nPlease enter a file with .txt extension!\n", fileExtension +1);
+        exit(2);
+    }
+    
+    printf("\nSuccess: Opened dataset file - %s \n", filename);
 
     int row_Count = 0;
     int row_Count2 = 0;
