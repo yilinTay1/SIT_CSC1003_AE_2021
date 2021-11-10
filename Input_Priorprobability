@@ -152,7 +152,7 @@ void main(void)
                 }
             }
             col_Count += 1;
-            token = strtok(NULL, ","); //NULL as the first argument, tells the function to continue tokenizing the string you passed in first.
+            token = strtok(NULL, ","); //strtok modifies the original string. It puts NULL characters ('\0') at the delimiter position after every call to strtok so that tokens can be tracked.
         }
 
         if (row_Count >= 80)
