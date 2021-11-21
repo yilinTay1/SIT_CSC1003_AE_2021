@@ -755,6 +755,17 @@ void conditionalProbability(void)
 /*************************************************************/
 void posteriorProbability(void)
 {
+       //Reset
+       Training_true_Positive = 0;
+       Training_false_Positive = 0;
+       Training_false_Negative = 0;
+       Training_true_Negative = 0;
+       //Reset
+       Testing_true_Positive = 0;
+       Testing_false_Positive = 0;
+       Testing_false_Negative = 0;
+       Testing_true_Negative = 0;
+
        // Using training data
        for (size_t i = 0; i < Training_Row; i++)
        {
@@ -1118,8 +1129,8 @@ void probability_of_Error(void)
        /* void probability_of_Error(void) */
        /* Kenny Lim Ye Wei 2102764@sit.singaporetech.edu.sg              */
        /*************************************************************/
-       Sum_Train_Error = 0.0;
-       Sum_Test_Error = 0.0;
+       Sum_Train_Error = 0.0;      // Reset 
+       Sum_Test_Error = 0.0;       //Reset
 
        for (size_t i = 0; i < Training_Row; i++)
        {
