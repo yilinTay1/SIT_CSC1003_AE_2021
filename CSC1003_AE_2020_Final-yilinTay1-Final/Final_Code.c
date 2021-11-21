@@ -11,12 +11,14 @@
 
 #define PI 3.142
 
-int readingFile(void);             // function Prototypes
-void priorProbability(void);       // function Prototypes
-void conditionalProbability(void); // function Prototypes
+// function Prototypes
+int readingFile(void);             
+void priorProbability(void);      
+void conditionalProbability(void);
 void posteriorProbability(void);
 void probability_of_Error(void);
-void outputProgram(double *f_errorIncrement, double *f_trainingIncrement);
+void outputProgram(double *f_trainingErrorIncrements, double *f_Increment, int counter);
+void endTime();
 
 // number of row in data
 int Training_Row = 50;
@@ -93,13 +95,18 @@ double diff = 0.0;
 // Calculate probability of error
 double Training_Error[90][1];
 double Testing_Error[50][1];
-double Sum_Test_Error = 0;
 double Sum_Train_Error = 0;
+double Sum_Test_Error = 0;
 
-int true_Positive;
-int false_Positive;
-int false_Negative;
-int true_Negative;
+int Training_true_Positive;
+int Training_false_Positive;
+int Training_false_Negative;
+int Training_true_Negative;
+
+int Testing_true_Positive;
+int Testing_false_Positive;
+int Testing_false_Negative;
+int Testing_true_Negative;
 
 double time_spent;
 clock_t begin;
@@ -107,7 +114,9 @@ clock_t end;
 
 int CounterIncrement = 0;
 double trainingIncrement[5];
-double errorIncrement[5];
+double testingIncrement[5];
+double trainingErrorIncrement[5];
+double testingErrorIncrement[5];
 
 void main(void)
 {
@@ -123,6 +132,8 @@ void main(void)
        do
        {
               trainingIncrement[CounterIncrement] = Training_Row;
+              testingIncrement[CounterIncrement] = Testing_Row;
+
               /* calculate prior probability */
               priorProbability();
 
@@ -139,7 +150,9 @@ void main(void)
               Testing_Row -= 10;
               CounterIncrement += 1;
        } while (Training_Row != 100);
-       outputProgram(errorIncrement, trainingIncrement);
+       outputProgram(trainingErrorIncrement, trainingIncrement, 1);
+       outputProgram(testingErrorIncrement, testingIncrement, 2);
+       endTime();
 }
 
 /**************************************************************/
@@ -742,9 +755,9 @@ void conditionalProbability(void)
 /*************************************************************/
 void posteriorProbability(void)
 {
+       // Using training data
        for (size_t i = 0; i < Training_Row; i++)
        {
-              // Using training data
               // Getting CP of Season of analysis
               if (trainingFeature[i][0] == -1) // Winter
               {
@@ -897,12 +910,12 @@ void posteriorProbability(void)
                      if (PP_Predicted_Result[i][0] == 0) //Predicted Normal but Altered
                      {
                             //No of times predict wrongly that patient is normal but patient is actually not normal
-                            false_Negative += 1;
+                            Training_false_Negative += 1;
                      }
                      if (PP_Predicted_Result[i][0] == 1) //Predicted Altered but Normal
                      {
                             //No of times predict wrongly that patient is not normal but patient is actually normal
-                            false_Positive += 1;
+                            Training_false_Positive += 1;
                      }
               }
               if (PP_Predicted_Result[i][0] == trainingOutput[i][0])
@@ -910,12 +923,12 @@ void posteriorProbability(void)
                      if (PP_Predicted_Result[i][0] == 0)
                      {
                             //No of times predict correctly that patient is normal (Normal : 0)
-                            true_Positive += 1;
+                            Training_true_Positive += 1;
                      }
                      if (PP_Predicted_Result[i][0] == 1)
                      {
                             //No of times predict correctly that patient is not normal (Altered : 1)
-                            true_Negative += 1;
+                            Training_true_Negative += 1;
                      }
               }
        }
@@ -1061,16 +1074,41 @@ void posteriorProbability(void)
               diff = PP_Result_Normal[i][0] - PP_Result_Altered[i][0];
               if (diff >= 0)
               {
-                     PP_Predicted_Result[i][0] = 0;
+                     PP_Predicted_Result[i][0] = 0; //Normal
               }
               else
               {
-                     PP_Predicted_Result[i][0] = 1;
+                     PP_Predicted_Result[i][0] = 1; //Altered
               }
+
               if (PP_Predicted_Result[i][0] != testingOutput[i][0])
               {
                      Testing_Error[i][0] = 1;
+                     if (PP_Predicted_Result[i][0] == 0) //Predicted Normal but Altered
+                     {
+                            //No of times predict wrongly that patient is normal but patient is actually not normal
+                            Testing_false_Negative += 1;
+                     }
+                     if (PP_Predicted_Result[i][0] == 1) //Predicted Altered but Normal
+                     {
+                            //No of times predict wrongly that patient is not normal but patient is actually normal
+                            Testing_false_Positive += 1;
+                     }
               }
+              if (PP_Predicted_Result[i][0] == testingOutput[i][0])
+              {
+                     if (PP_Predicted_Result[i][0] == 0)
+                     {
+                            //No of times predict correctly that patient is normal (Normal : 0)
+                            Testing_true_Positive += 1;
+                     }
+                     if (PP_Predicted_Result[i][0] == 1)
+                     {
+                            //No of times predict correctly that patient is not normal (Altered : 1)
+                            Testing_true_Negative += 1;
+                     }
+              }
+
        }
 }
 
@@ -1080,44 +1118,65 @@ void probability_of_Error(void)
        /* void probability_of_Error(void) */
        /* Kenny Lim Ye Wei 2102764@sit.singaporetech.edu.sg              */
        /*************************************************************/
-       Sum_Test_Error = 0.0;
        Sum_Train_Error = 0.0;
+       Sum_Test_Error = 0.0;
 
        for (size_t i = 0; i < Training_Row; i++)
        {
               Sum_Train_Error += Training_Error[i][0];
        }
+       for (size_t i = 0; i < Testing_Row; i++)
+       {
+              Sum_Test_Error += Testing_Error[i][0];
+       }
 
        Sum_Train_Error /= Training_Row;
+       Sum_Test_Error /= Testing_Row;
        /**************************************************************/
        /* void probability_of_Error(void) */
        /* Tay Yi Lin  2103154@sit.singaporetech.edu.sg              */
        /*************************************************************/
        printf("\n\nProbability of error for %d training data: %f\n\n", Training_Row, Sum_Train_Error);
-       errorIncrement[CounterIncrement] = Sum_Train_Error;
+       trainingErrorIncrement[CounterIncrement] = Sum_Train_Error;
+
+       printf("Confusion Matrix - Training dataset");
+       printf("\n_____________________________________________________________________________________________\n");
+       printf("                      Actual Positive(Normal)                   Actual Negative(Altered) ");
+       printf("\n_____________________________________________________________________________________________\n");
+       printf("Predicted Positive      %d(True Positive)                           %d(False Negative)      \n", Training_true_Positive, Training_false_Negative);
+       printf("Predicted Negative      %d(False Positive)                           %d(True Negative)      \n", Training_false_Positive, Training_true_Negative);
+       printf("\n_____________________________________________________________________________________________\n");
+
+       printf("\n\nProbability of error for %d testing data: %f\n\n", Testing_Row, Sum_Test_Error);
+       testingErrorIncrement[CounterIncrement] = Sum_Test_Error;
 
        printf("Confusion Matrix - Testing dataset");
        printf("\n_____________________________________________________________________________________________\n");
        printf("                      Actual Positive(Normal)                   Actual Negative(Altered) ");
        printf("\n_____________________________________________________________________________________________\n");
-       printf("Predicted Positive      %d(True Positive)                           %d(False Negative)      \n", true_Positive, false_Negative);
-       printf("Predicted Negative      %d(False Positive)                           %d(True Negative)      \n", false_Positive, true_Negative);
+       printf("Predicted Positive      %d(True Positive)                           %d(False Negative)      \n", Testing_true_Positive, Testing_false_Negative);
+       printf("Predicted Negative      %d(False Positive)                           %d(True Negative)      \n", Testing_false_Positive, Testing_true_Negative);
        printf("\n_____________________________________________________________________________________________\n");
 }
 /**************************************************************/
-/* void outputProgram(double *f_errorIncrement, double *f_trainingIncrement) */
+/* void outputProgram(double *f_errorIncrement, double *f_Increment) */
 /* Tay Yi Lin  2103154@sit.singaporetech.edu.sg              */
 /*************************************************************/
-void outputProgram(double *f_errorIncrement, double *f_trainingIncrement)
+void outputProgram(double *f_trainingErrorIncrement, double *f_Increment, int count)
 {
-       //Plot the probability of error for the training set
+       //Plot the probability of training error 
        RGBABitmapImageReference *canvasReference = CreateRGBABitmapImageReference();
-       DrawScatterPlot(canvasReference, 1000, 500, f_errorIncrement, 5, f_trainingIncrement, 5);
+       DrawScatterPlot(canvasReference, 1000, 500, f_trainingErrorIncrement, 5, f_Increment, 5);
        size_t length;
        double *pngdata = ConvertToPNG(&length, canvasReference->image);
-       WriteToFile(pngdata, length, "outputPlot.png");
-       DeleteImage(canvasReference->image);
+       if(count == 1)
+              WriteToFile(pngdata, length, "trainingOutputPlot.png");
+       else
+              WriteToFile(pngdata, length, "testingOutputPlot.png");
+       DeleteImage(canvasReference->image);  
+}
 
+void endTime(){
        //Time taken to complete entire program
        end = clock(); /*end timimg*/
        time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
