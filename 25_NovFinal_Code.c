@@ -265,9 +265,6 @@ int readingFile(void)
 void priorProbability(void)
 {
 
-       //int yAlteredCounter = 0;
-       float yAlteredProbability = 0.0;
-
        for (size_t i = 0; i < Training_Row; i++)
        {
               if (trainingOutput[i][0] == 1.000000)
@@ -276,9 +273,8 @@ void priorProbability(void)
               }
        }
        yNormalCounter = Training_Row - yAlteredCounter;
-       yAlteredProbability = (float)yAlteredCounter / (float)Training_Row;
 
-       priorProbability_Altered = yAlteredProbability;
+       priorProbability_Altered = (float)yAlteredCounter / (float)Training_Row;
        priorProbability_Normal = 1 - priorProbability_Altered;
 }
 
