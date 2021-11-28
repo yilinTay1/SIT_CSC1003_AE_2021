@@ -1,4 +1,4 @@
-//gcc Final_Code.c pbPlots.c supportLib.c -lm
+//gcc 25_NovFinal_Code.c pbPlots.c supportLib.c -lm
 //data_Group9_11.txt
 
 #include <stdio.h>
@@ -92,7 +92,6 @@ double PP_Result_Normal[90][1];
 double PP_Result_Altered[90][1];
 double PP_Predicted_Result[90][1];
 double z;
-double diff = 0.0;
 
 // Calculate probability of error
 double Training_Error[90][1];
@@ -131,7 +130,7 @@ void main(void)
        begin = clock(); /*start timimg*/
 
        /* print heading */
-       printf("\nInput_priorProbability.c \n");
+       printf("\nNaive Bayes Classifier\n");
        printf("**************************************************************");
 
        do
@@ -264,6 +263,7 @@ int readingFile(void)
 
 void priorProbability(void)
 {
+       yAlteredCounter = 0;
 
        for (size_t i = 0; i < Training_Row; i++)
        {
@@ -363,7 +363,7 @@ void conditionalProbability(void)
        /*find the conditional probability (normal gaussian)parameter of Age of Analysis under Diagnosis=normal=0 and Diagnosis=altered=1*/
        /************************************************************************************************************/
 
-       for (size_t i = 1; i < Training_Row; ++i)
+       for (size_t i = 0; i < Training_Row; ++i)
        {
               if (trainingOutput[i][0] == 0.000000) /*under diagnosis=normal, 0;*/
               {
@@ -732,7 +732,7 @@ void conditionalProbability(void)
        /*find the conditional probability (normal gaussian)parameter of number of hour spent sitting per day under Diagnosis=normal=0 and Diagnosis=altered=1*/
        /***************************************************************************************************************************************************/
 
-       for (size_t i = 1; i < Training_Row; ++i)
+       for (size_t i = 0; i < Training_Row; ++i)
        {
               if (trainingOutput[i][0] == 0.000000) /*under diagnosis=normal, 0;*/
               {
@@ -919,7 +919,6 @@ void posteriorProbability(void)
 
               PP_Result_Altered[i][0] = PP_Season_Altered * PP_Age_Altered * PP_Childish_Disease_Altered * PP_Accident_Trauma_Altered * PP_Surgical_Intervention_Altered * PP_High_Fever_Altered * PP_Alcohol_Consumption_Altered * PP_Somking_Habit_Altered * PP_Hour_Sitting_Altered * priorProbability_Altered;
 
-              PP_Predicted_Result[i][0] = 0;
               if (PP_Result_Normal[i][0] >= PP_Result_Altered[i][0])
               {
                      PP_Predicted_Result[i][0] = 0; //Normal
@@ -929,37 +928,38 @@ void posteriorProbability(void)
                      PP_Predicted_Result[i][0] = 1; //Altered
               }
 
-              if ((int)PP_Predicted_Result[i][0] != (int)trainingOutput[i][0])
+              if (PP_Predicted_Result[i][0] != trainingOutput[i][0])
               {
                      Training_Error[i][0] = 1;
-                     if ((int)PP_Predicted_Result[i][0] == 0) //Predicted Normal but Altered
+                     if (PP_Predicted_Result[i][0] == 0) //Predicted Normal but Altered
                      {
                             //No of times predict wrongly that patient is normal but patient is actually not normal
                             Training_false_Negative += 1;
-                            Training_Negative += 1;
+                            Training_Positive += 1;
                             
                      }
-                     if ((int)PP_Predicted_Result[i][0] == 1) //Predicted Altered but Normal
+                     else if (PP_Predicted_Result[i][0] == 1) //Predicted Altered but Normal
                      {
                             //No of times predict wrongly that patient is altered but patient is actually normal
                             Training_false_Positive += 1;
-                            Training_Positive += 1;
+                            Training_Negative += 1;
                      }
               }
               else
               {
                      Training_Error[i][0] = 0;
-                     if ((int)PP_Predicted_Result[i][0] == 0)
+                     if (PP_Predicted_Result[i][0] == 0)
                      {
                             //No of times predict correctly that patient is normal (Normal : 0)
-                            Training_true_Positive += 1;
-                            Training_Positive += 1;
-                     }
-                     else if ((int)PP_Predicted_Result[i][0] == 1)
-                     {
-                            //No of times predict correctly that patient is not normal (Altered : 1)
                             Training_true_Negative += 1;
                             Training_Negative += 1;
+                            
+                     }
+                     else if (PP_Predicted_Result[i][0] == 1)
+                     {
+                            //No of times predict correctly that patient is not normal (Altered : 1)
+                            Training_true_Positive += 1;
+                            Training_Positive += 1;
                      }
               }
        }
@@ -1102,8 +1102,7 @@ void posteriorProbability(void)
               PP_Result_Normal[i][0] = PP_Season_Normal * PP_Age_Normal * PP_Childish_Disease_Normal * PP_Accident_Trauma_Normal * PP_Surgical_Intervention_Normal * PP_High_Fever_Normal * PP_Alcohol_Consumption_Normal * PP_Somking_Habit_Normal * PP_Hour_Sitting_Normal * priorProbability_Normal;
               PP_Result_Altered[i][0] = PP_Season_Altered * PP_Age_Altered * PP_Childish_Disease_Altered * PP_Accident_Trauma_Altered * PP_Surgical_Intervention_Altered * PP_High_Fever_Altered * PP_Alcohol_Consumption_Altered * PP_Somking_Habit_Altered * PP_Hour_Sitting_Altered * priorProbability_Altered;
 
-              PP_Predicted_Result[i][0] = 0;
-              if ((int)PP_Result_Normal[i][0] >= (int)PP_Result_Altered[i][0])
+              if (PP_Result_Normal[i][0] >= PP_Result_Altered[i][0])
               {
                      PP_Predicted_Result[i][0] = 0; //Normal
               }
@@ -1111,36 +1110,37 @@ void posteriorProbability(void)
               {
                      PP_Predicted_Result[i][0] = 1; //Altered
               }
-              if ((int)PP_Predicted_Result[i][0] != (int)testingOutput[i][0])
+              if (PP_Predicted_Result[i][0] != testingOutput[i][0])
               {
                      Testing_Error[i][0] = 1;
-                     if ((int)PP_Predicted_Result[i][0] == 0) //Predicted Normal but Altered
+                     if (PP_Predicted_Result[i][0] == 0) //Predicted Normal but Altered
                      {
                             //No of times predict wrongly that patient is normal but patient is actually not normal
                             Testing_false_Negative += 1;
-                            Testing_Negative += 1;
+                            Testing_Positive += 1;
                      }
-                     if ((int)PP_Predicted_Result[i][0] == 1) //Predicted Altered but Normal
+                     else if (PP_Predicted_Result[i][0] == 1) //Predicted Altered but Normal
                      {
                             //No of times predict wrongly that patient is altered but patient is actually normal
                             Testing_false_Positive += 1;
-                            Testing_Positive += 1;
+                            Testing_Negative += 1;
                      }
               }
               else
               {
                      Testing_Error[i][0] = 0;
-                     if ((int)PP_Predicted_Result[i][0] == 0)
+                     if (PP_Predicted_Result[i][0] == 0)
                      {
                             //No of times predict correctly that patient is normal (Normal : 0)
-                            Testing_true_Positive += 1;
-                            Testing_Positive += 1;
-                     }
-                     if ((int)PP_Predicted_Result[i][0] == 1)
-                     {
-                            //No of times predict correctly that patient is not normal (Altered : 1)
                             Testing_true_Negative += 1;
                             Testing_Negative += 1;
+                            
+                     }
+                     else if (PP_Predicted_Result[i][0] == 1)
+                     {
+                            //No of times predict correctly that patient is not normal (Altered : 1)
+                            Testing_true_Positive += 1;
+                            Testing_Positive += 1;
                      }
               }
        }
@@ -1176,9 +1176,9 @@ void probability_of_Error(void)
        printf("\n_____________________________________________________________________________________________\n");
        printf("                      Actual Positive(Normal)                   Actual Negative(Altered) ");
        printf("\n_____________________________________________________________________________________________\n");
-       printf("Predicted Positive      %d(True Positive)                           %d(False Negative)      \n", Training_true_Positive, Training_false_Negative);
-       printf("Predicted Negative      %d(False Positive)                           %d(True Negative)      \n", Training_false_Positive, Training_true_Negative);
-       printf("Real                    %d(Real Positive)                           %d(Real Negative)      \n", Training_Positive, Training_Negative);
+       printf("Predicted Positive      %d(True Negative)                           %d(False Negative)      \n", Training_true_Negative, Training_false_Negative);
+       printf("Predicted Negative      %d(False Positive)                           %d(True Positive)      \n", Training_false_Positive, Training_true_Positive);
+       printf("Real                    %d(Real Negative)                           %d(Real Positive)      \n", Training_Negative, Training_Positive);
        printf("\n_____________________________________________________________________________________________\n");
 
        printf("\n\nProbability of error for %d testing data: %f\n\n", Testing_Row, Sum_Test_Error);
@@ -1187,9 +1187,9 @@ void probability_of_Error(void)
        printf("\n_____________________________________________________________________________________________\n");
        printf("                      Actual Positive(Normal)                   Actual Negative(Altered) ");
        printf("\n_____________________________________________________________________________________________\n");
-       printf("Predicted Positive      %d(True Positive)                           %d(False Negative)      \n", Testing_true_Positive, Testing_false_Negative);
-       printf("Predicted Negative      %d(False Positive)                           %d(True Negative)      \n", Testing_false_Positive, Testing_true_Negative);
-       printf("Real                    %d(Real Positive)                           %d(Real Negative)      \n", Testing_Positive, Testing_Negative);
+       printf("Predicted Positive      %d(True Negative)                           %d(False Negative)      \n", Testing_true_Negative, Testing_false_Negative);
+       printf("Predicted Negative      %d(False Positive)                           %d(True Positive)      \n", Testing_false_Positive, Testing_true_Positive);
+       printf("Real                    %d(Real Negative)                           %d(Real Positive)      \n", Testing_Negative, Testing_Positive);
        printf("\n_____________________________________________________________________________________________\n");
 }
 
