@@ -1204,11 +1204,6 @@ void probability_of_Error(void)
 /*************************************************************/
 void outputProgram(double *x_axis, double *y_axis, int count)
 {      
-
-       for(int i = 0; i < 5; i++){
-              printf("\nY-xis[%d]: %f", i, y_axis[i]);
-       }
-       
        //Plot the probability of training error
        RGBABitmapImageReference *canvasReference = CreateRGBABitmapImageReference();
        DrawScatterPlot(canvasReference, 1000, 500, x_axis, 5, y_axis, 5);
