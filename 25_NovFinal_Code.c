@@ -17,12 +17,13 @@ void priorProbability(void);
 void conditionalProbability(void);
 void posteriorProbability(void);
 void probability_of_Error(void);
-void outputProgram(double *f_trainingErrorIncrements, double *f_Increment, int counter);
+void outputProgram(double *x_axis, double *y_axis, int counter);
 void endTime();
 
 // number of row in data
 int Training_Row = 50;
 int Testing_Row = 50;
+
 
 // prior probability
 double priorProbability_Normal = 0;
@@ -119,10 +120,10 @@ clock_t begin;
 clock_t end;
 
 int CounterIncrement = 0;
-double trainingIncrement[5];
-double testingIncrement[5];
-double trainingErrorIncrement[5];
-double testingErrorIncrement[5];
+double training_y_axis[5];
+double testing_y_axis[5];
+double training_x_axis[5];
+double testing_x_axis[5];
 
 void main(void)
 {
@@ -138,9 +139,9 @@ void main(void)
               readingFile();
               fileRead = 1;
 
-              trainingIncrement[CounterIncrement] = Training_Row;
-              testingIncrement[CounterIncrement] = Testing_Row;
-
+              training_y_axis[CounterIncrement] = Training_Row;
+              testing_y_axis[CounterIncrement] = Testing_Row;
+              
               /* calculate prior probability */
               priorProbability();
 
@@ -157,8 +158,8 @@ void main(void)
               Testing_Row -= 10;
               CounterIncrement += 1;
        } while (Training_Row != 100);
-       outputProgram(trainingErrorIncrement, trainingIncrement, 1);
-       outputProgram(testingErrorIncrement, testingIncrement, 2);
+       outputProgram(training_x_axis, training_y_axis, 1);
+       outputProgram(testing_x_axis, testing_y_axis, 2);
 
        endTime();
 }
@@ -1171,7 +1172,7 @@ void probability_of_Error(void)
        Sum_Test_Error /= Testing_Row;
 
        printf("\n\nProbability of error for %d training data: %f\n\n", Training_Row, Sum_Train_Error);
-       trainingErrorIncrement[CounterIncrement] = Sum_Train_Error;
+       training_x_axis[CounterIncrement] = Sum_Train_Error;
        printf("Confusion Matrix - Training dataset");
        printf("\n_____________________________________________________________________________________________\n");
        printf("                      Actual Positive(Normal)                   Actual Negative(Altered) ");
@@ -1182,7 +1183,7 @@ void probability_of_Error(void)
        printf("\n_____________________________________________________________________________________________\n");
 
        printf("\n\nProbability of error for %d testing data: %f\n\n", Testing_Row, Sum_Test_Error);
-       testingErrorIncrement[CounterIncrement] = Sum_Test_Error;
+       testing_x_axis[CounterIncrement] = Sum_Test_Error;
        printf("Confusion Matrix - Testing dataset");
        printf("\n_____________________________________________________________________________________________\n");
        printf("                      Actual Positive(Normal)                   Actual Negative(Altered) ");
@@ -1201,11 +1202,16 @@ void probability_of_Error(void)
 /* void probability_of_Error(void) */
 /* Tay Yi Lin  2103154@sit.singaporetech.edu.sg              */
 /*************************************************************/
-void outputProgram(double *f_trainingErrorIncrement, double *f_Increment, int count)
-{
+void outputProgram(double *x_axis, double *y_axis, int count)
+{      
+
+       for(int i = 0; i < 5; i++){
+              printf("\nY-xis[%d]: %f", i, y_axis[i]);
+       }
+       
        //Plot the probability of training error
        RGBABitmapImageReference *canvasReference = CreateRGBABitmapImageReference();
-       DrawScatterPlot(canvasReference, 1000, 500, f_trainingErrorIncrement, 5, f_Increment, 5);
+       DrawScatterPlot(canvasReference, 1000, 500, x_axis, 5, y_axis, 5);
        size_t length;
        double *pngdata = ConvertToPNG(&length, canvasReference->image);
 
